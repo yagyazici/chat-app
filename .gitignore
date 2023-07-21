@@ -1,0 +1,51 @@
+# Node.js / npm
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Angular specific
+/dist/
+/e2e/*.js
+/e2e/*.map
+
+# IDEs and editors
+/.vscode/
+
+# Build artifacts
+/*.js.map
+/*.css
+/*.css.map
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
