@@ -18,11 +18,12 @@ public static class DependencyInjection
 		services.AddHttpContextAccessor();
 		services.AddScoped<IHttpContextService, HttpContextService>();
 		services.AddScoped<ITokenService, TokenService>();
+		services.AddScoped<IUserService, UserService>();
+		services.AddScoped<IChatService, ChatService>();
 	}
 
 	public static void AddAuthentications(this IServiceCollection services, WebApplicationBuilder builder)
 	{
-		services.AddScoped<IUserService, UserService>();
 		services.AddHttpContextAccessor();
 		services.AddSwaggerGen(options =>
 		{

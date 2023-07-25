@@ -1,3 +1,4 @@
+namespace Domain.Services;
 public interface IChatHubService
 {
 	Task CreateChatMessage(string userId);

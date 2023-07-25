@@ -48,6 +48,41 @@ public class ChatService : IChatService
 		};
 
 		await _chatHubService.CreateChatMessage(userId);
-		return Success<string>.Response("new chat created");
+		await _chatRepository.AddAsync(newChat);
+
+		return Success<Chat>.Response(newChat);
+	}
+
+	public async Task<Response> SendMessage(string chatId, string text)
+	{
+		var currentUserId = _httpContext.GetUserId();
+
+		var chat = await _chatRepository.GetByIdAsync(chatId);
+
+		var otherUser = chat.Participants.Where(user => user.Id != currentUserId).FirstOrDefault();
+
+		var newMessage = new Message
+		{
+			SenderId = currentUserId,
+			Text = text
+		};
+
+		chat.Messages.Add(newMessage);
+
+		await _chatRepository.UpdateAsync(chat);
+		await _chatHubService.SendMessage(otherUser.Id, text);
+
+		return Success<List<Message>>.Response(chat.Messages);
+	}
+
+	public async Task<Response> GetUserChats()
+	{
+		var currentUserId = _httpContext.GetUserId();
+
+		var chats = await _chatRepository.FilterAsync(chat => 
+			chat.Participants.Where(user => user.Id == currentUserId).Any()
+		);
+
+		return Success<List<Chat>>.Response(chats);
 	}
 }

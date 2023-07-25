@@ -19,6 +19,13 @@ yarn-error.log
 # Miscellaneous
 .DS_Store
 Thumbs.db
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
 
 *.swp
 *.*~

@@ -11,7 +11,7 @@ public class HttpContextService : IHttpContextService
 	public HttpContextService(IHttpContextAccessor httpContextAccessor) => _httpContextAccessor = httpContextAccessor;
 
 	public string GetUserRole() => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
-	
+
 	public string GetCookie(string key) => _httpContextAccessor.HttpContext.Request.Cookies[key];
 
 	public void SetCookie(string key, string value, CookieOptions options)
@@ -20,4 +20,10 @@ public class HttpContextService : IHttpContextService
 	}
 
 	public string GetUserId() => _httpContextAccessor.HttpContext.User.FindFirstValue("Id") ?? string.Empty;
+
+	public string deneme()
+	{
+		var bruh = _httpContextAccessor.HttpContext.Request.Headers[""];
+		return "";
+	}
 }
