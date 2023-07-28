@@ -29,7 +29,7 @@ public class UserService : IUserService
 		_mapper = mapper;
 	}
 
-	public async Task<Response> Login(LoginDto request)
+	public async Task<Response> Login(Authentication request)
 	{
 		var checkUser = await _genericRepository.AnyAsync(entity => entity.Username == request.Username);
 		if (!checkUser)
@@ -73,7 +73,7 @@ public class UserService : IUserService
 		return Success<AuthToken>.Response(authToken);
 	}
 
-	public async Task<Response> Register(RegisterDto request)
+	public async Task<Response> Register(Authentication request)
 	{
 		var checkUsername = await _genericRepository.AnyAsync(entity => entity.Username == request.Username);
 		if (checkUsername)
@@ -88,7 +88,7 @@ public class UserService : IUserService
 			PasswordSalt = passwordSalt
 		};
 		await _genericRepository.AddAsync(newUser);
-		return Success<User>.Response(newUser);
+		return Success<string>.Response("user created");
 	}
 
 	public async Task<List<UserDto>> SearchUser(string username)

@@ -15,7 +15,7 @@ public class ChatHub : Hub
 	public override Task OnConnectedAsync()
 	{
 		var httpContext = Context.GetHttpContext();
-		var userId = httpContext.Request.Headers["UserId"];
+		var userId = httpContext.Request.Headers["User"];
 
 		Groups.AddToGroupAsync(Context.ConnectionId, userId);
 		_logger.LogInformation($"{userId} connected.");

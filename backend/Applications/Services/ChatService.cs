@@ -34,12 +34,12 @@ public class ChatService : IChatService
 		var currentUserId = _httpContext.GetUserId();
 		var currentUser = await _userRepository.GetByIdAsync(currentUserId);
 
-		var otherUser = await _userRepository.GetByIdAsync(userId);
+		var receiver = await _userRepository.GetByIdAsync(userId);
 
 		var currentUserDto = _mapper.Map<UserDto>(currentUser);
-		var otherUserDto = _mapper.Map<UserDto>(otherUser);
+		var receiverDto = _mapper.Map<UserDto>(receiver);
 
-		var participants = new List<UserDto>() { currentUserDto, otherUserDto };
+		var participants = new List<UserDto>() { currentUserDto, receiverDto };
 
 		var newChat = new Chat
 		{
@@ -59,7 +59,7 @@ public class ChatService : IChatService
 
 		var chat = await _chatRepository.GetByIdAsync(chatId);
 
-		var otherUser = chat.Participants.Where(user => user.Id != currentUserId).FirstOrDefault();
+		var receiver = chat.Participants.Where(user => user.Id != currentUserId).FirstOrDefault();
 
 		var newMessage = new Message
 		{
@@ -70,7 +70,7 @@ public class ChatService : IChatService
 		chat.Messages.Add(newMessage);
 
 		await _chatRepository.UpdateAsync(chat);
-		await _chatHubService.SendMessage(otherUser.Id, text);
+		await _chatHubService.SendMessage(receiver.Id, text);
 
 		return Success<List<Message>>.Response(chat.Messages);
 	}

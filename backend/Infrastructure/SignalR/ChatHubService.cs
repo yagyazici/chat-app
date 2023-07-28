@@ -12,13 +12,13 @@ public class ChatHubService : IChatHubService
 		_hubContext = hubContext;
 	}
 
-	public async Task CreateChatMessage(string userId)
+	public async Task CreateChatMessage(string receiverId)
 	{
-		await _hubContext.Clients.User(userId).SendAsync("ReceiveNewChat", userId);
+		await _hubContext.Clients.User(receiverId).SendAsync("ReceiveNewChat", receiverId);
 	}
 
-	public async Task SendMessage(string userId, string message)
+	public async Task SendMessage(string receiverId, string message)
     {
-        await _hubContext.Clients.User(userId).SendAsync("ReceiveNewMessage", userId, message);
+        await _hubContext.Clients.User(receiverId).SendAsync("ReceiveNewMessage", message);
     }
 }

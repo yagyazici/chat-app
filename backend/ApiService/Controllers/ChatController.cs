@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApiService.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]/[action]")]
 public class ChatController : ControllerBase
 {
@@ -13,12 +14,12 @@ public class ChatController : ControllerBase
 
 	public ChatController(IChatService chatService) => _chatService = chatService;
 	
-	[HttpPost, Authorize]
+	[HttpPost]
 	public async Task<Response> CreateNewChat(string userId) => await _chatService.CreateNewChat(userId);
 
-	[HttpPost, Authorize]
+	[HttpPost]
 	public async Task<Response> SendMessage(string chatId, string text) => await _chatService.SendMessage(chatId, text);
 
-	[HttpPost, Authorize]
+	[HttpGet]
 	public async Task<Response> GetUserChats() => await _chatService.GetUserChats();
 }
