@@ -1,4 +1,4 @@
 export class Message {
-	SenderId: string;
-	Text: string;
+	senderId: string;
+	text: string;
 }

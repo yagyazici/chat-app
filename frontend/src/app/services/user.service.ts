@@ -5,13 +5,15 @@ import { Observable } from 'rxjs';
 import { CustomResponse } from '../models/responses/custom-response';
 import { User } from '../models/entities/user';
 import { AuthToken } from '../models/auth/auth-token';
+import { LoginResponse } from '../models/responses/login-response';
+import { Response } from '../models/base/response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  baseUrl = "http://localhost:5276/User";
+  baseUrl = "https://localhost:7030/User";
 
   constructor(
     private httpClient: HttpClient
@@ -22,9 +24,9 @@ export class UserService {
     return this.httpClient.post<CustomResponse<string>>(url, authentication)
   }
 
-  login = (authentication: Authentication): Observable<CustomResponse<User & string>> => {
+  login = (authentication: Authentication): Observable<LoginResponse<User> & CustomResponse<Response>> => {
     const url = this.baseUrl + "/Login";
-    return this.httpClient.post<CustomResponse<User & string>>(url, authentication);
+    return this.httpClient.post<LoginResponse<User> & CustomResponse<Response>>(url, authentication);
   }
 
   refreshToken = (): Observable<CustomResponse<AuthToken & string>> => {

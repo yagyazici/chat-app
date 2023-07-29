@@ -10,7 +10,7 @@ import { Message } from '../models/entities/message';
 })
 export class ChatService {
 
-  baseUrl = "http://localhost:5276/Chat";
+  baseUrl = "https://localhost:7030/Chat";
 
   constructor(
     private httpClient: HttpClient

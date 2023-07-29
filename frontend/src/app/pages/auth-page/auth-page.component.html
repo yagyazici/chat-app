@@ -1,0 +1,26 @@
+<div class="container rounded">
+  <form
+    [formGroup]="authForm"
+    class="auth-form p-3 rounded"
+    (submit)="submit()"
+  >
+    <h2>{{ currentUrl | uppercase }}</h2>
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password"/>
+    </mat-form-field>
+    <div class="buttons">
+      <p>
+        {{ label }} <br />
+        <span [routerLink]="routerLink">{{ innerLabel }}</span>
+      </p>
+      <button mat-raised-button color="primary">
+        {{ currentUrl | titlecase }}
+      </button>
+    </div>
+  </form>
+</div>

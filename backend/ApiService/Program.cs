@@ -21,14 +21,15 @@ builder.Services.AddAuthentications(builder);
 builder.Services.AddSignalRServices();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy
-    .WithOrigins("http://localhost:4200", "https://localhost:4200")
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
+	policy
+	.WithOrigins("http://localhost:4200", "https://localhost:4200")
+	.AllowAnyHeader()
+	.AllowAnyMethod()
+	.AllowCredentials()
 ));
 
 var app = builder.Build();
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -37,7 +38,10 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

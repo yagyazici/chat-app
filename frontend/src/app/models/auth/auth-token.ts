@@ -1,4 +1,4 @@
 export class AuthToken {
-	Token: string;
-	Expires: Date;
+	token: string;
+	expires: Date;
 }

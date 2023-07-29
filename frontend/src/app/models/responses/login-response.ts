@@ -3,7 +3,7 @@ import { RefreshToken } from "../auth/refresh-token";
 import { Response } from "../base/response";
 
 export class LoginResponse<TEntity> extends Response {
-	Response: TEntity;
-	AuthToken: AuthToken;
-	RefrehToken: RefreshToken;
+	response: TEntity;
+	authToken: AuthToken;
+	refrehToken: RefreshToken;
 }
