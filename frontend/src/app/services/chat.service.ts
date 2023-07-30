@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { CustomResponse } from '../models/responses/custom-response';
 import { Chat } from '../models/entities/chat';
 import { Message } from '../models/entities/message';
+import { Properties } from '../constants/properties';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  baseUrl = "https://localhost:7030/Chat";
+  baseUrl = `${Properties.URL}/Chat`;
 
   constructor(
     private httpClient: HttpClient

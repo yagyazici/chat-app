@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import { Properties } from 'src/app/constants/properties';
 
 @Injectable({
   providedIn: 'root'
@@ -7,22 +8,22 @@ import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@micros
 export class SignalrService {
 
   private _connection: HubConnection;
-  
+
   get connection(): HubConnection {
     return this._connection;
   }
 
-  start() {
+  start(userId: string) {
     if (!this.connection || this._connection?.state == HubConnectionState.Disconnected) {
       const builder: HubConnectionBuilder = new HubConnectionBuilder();
 
-      const hubConnection: HubConnection = builder.withUrl("https://localhost:7030/chat-hub")
+      const hubConnection: HubConnection = builder.withUrl(`${Properties.URL}/chat-hub?user-id=` + encodeURIComponent(userId))
         .withAutomaticReconnect()
         .build();
 
       hubConnection.start()
         .then(() => console.log(`Connected to chat-hub`))
-        .catch(error => setTimeout(() => this.start(), 2000));
+        .catch(error => setTimeout(() => this.start(userId), 2000));
 
       this._connection = hubConnection;
     }
