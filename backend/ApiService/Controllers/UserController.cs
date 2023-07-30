@@ -20,10 +20,12 @@ public class UserController : ControllerBase
 	public async Task<Response> Register(Authentication request) => await _userService.Register(request);
 
 	[HttpPost]
+	public async Task<Response> RefreshToken(string refreshToken, string userId) =>
+		await _userService.RefreshToken(refreshToken, userId);
+		
+	[HttpPost]
 	public async Task<Response> Login(Authentication request) => await _userService.Login(request);
 
-	[HttpPost, Authorize]
-	public async Task<Response> RefreshToken() => await _userService.RefreshToken();
 
 	[HttpGet, Authorize]
 	public async Task<List<UserDto>> SearchUser(string username) => await _userService.SearchUser(username);

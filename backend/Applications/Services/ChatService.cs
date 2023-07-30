@@ -63,7 +63,7 @@ public class ChatService : IChatService
 
 		var newMessage = new Message
 		{
-			SenderId = currentUserId,
+			UserId = currentUserId,
 			Text = text
 		};
 

@@ -1,12 +1,12 @@
 .container {
 	display: flex;
-	justify-content: center;
 	width: 60%;
 	height: 75%;
 	background-color: #222;
 	border-radius: 8px;
 	padding: 20px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	gap: 0.75rem;
 }
 
 ::ng-deep app-chat-page {
@@ -14,4 +14,12 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.chat {
+	width: 75%;
+}
+
+.chats {
+	width: 25%;
 }

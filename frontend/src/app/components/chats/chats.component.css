@@ -1,0 +1,11 @@
+.chat {
+	cursor: pointer;
+	color: white;
+	padding-inline: 0.25rem;
+	padding-block: 0.75rem;
+	border: 1px solid rgba(255,255,255,.12);
+}
+
+.chat p {
+	margin: 0;
+}

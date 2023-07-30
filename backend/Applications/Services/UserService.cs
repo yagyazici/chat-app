@@ -41,7 +41,7 @@ public class UserService : IUserService
 		{
 			return Fail<string>.Response("Wrong password");
 		}
-		
+
 		var authToken = _tokenService.CreateToken(user);
 		var refreshToken = _tokenService.CreateRefreshToken();
 		_tokenService.SetRefreshToken(refreshToken, user);
@@ -50,14 +50,11 @@ public class UserService : IUserService
 
 		var mappedUser = _mapper.Map<UserDto>(user);
 
-		return Login<UserDto>.Success(mappedUser, authToken, refreshToken);
+		return TokenResponse<UserDto>.Success(mappedUser, authToken, refreshToken);
 	}
 
-	public async Task<Response> RefreshToken()
+	public async Task<Response> RefreshToken(string refreshToken, string userId)
 	{
-		var refreshToken = _httpContextService.GetCookie("refreshToken");
-		var userId = _httpContextService.GetUserId();
-
 		var user = await _genericRepository.GetByIdAsync(userId);
 
 		if (!user.RefreshToken.Token.Equals(refreshToken))
@@ -70,7 +67,7 @@ public class UserService : IUserService
 		_tokenService.SetRefreshToken(newRefreshToken, user);
 
 		await _genericRepository.UpdateAsync(user);
-		return Success<AuthToken>.Response(authToken);
+		return TokenResponse<string>.Success(authToken, newRefreshToken);
 	}
 
 	public async Task<Response> Register(Authentication request)

@@ -23,28 +23,12 @@ public class TokenService : ITokenService
 		_httpContextService = httpContextService;
 	}
 
-	public RefreshToken CreateRefreshToken()
+	public RefreshToken CreateRefreshToken() => new RefreshToken
 	{
-		return new RefreshToken
-		{
-			Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-			Expires = DateTime.Now.AddDays(7)
-		};
-	}
+		Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+	};
 
-	public void SetRefreshToken(RefreshToken refreshToken, User user)
-	{
-		var cookieOptions = new CookieOptions
-		{
-			HttpOnly = true,
-			Expires = refreshToken.Expires,
-			Domain = "localhost"
-		};
-		_httpContextService.SetCookie("refreshToken", refreshToken.Token, cookieOptions);
-		user.RefreshToken = refreshToken;
-	}
-
-	public string GetRefreshToken() => _httpContextService.GetCookie("refreshToken");
+	public void SetRefreshToken(RefreshToken refreshToken, User user) => user.RefreshToken = refreshToken;
 
 	public AuthToken CreateToken(User user)
 	{

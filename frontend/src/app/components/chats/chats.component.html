@@ -1,1 +1,3 @@
-<p>chats works!</p>
+<div [routerLink]="['/chat', chat.id]" *ngFor="let chat of chats" class="chat rounded">
+	<p>{{receiver(chat.participants)}}</p>
+</div>

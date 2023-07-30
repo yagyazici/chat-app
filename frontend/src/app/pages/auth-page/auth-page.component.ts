@@ -53,9 +53,12 @@ export class AuthPageComponent implements OnInit {
     if (this.currentUrl == "login"){
       this.userService.login(authenticate).subscribe(response => {
         if (response.isSuccessful) {
-          localStorage.setItem("token", response.authToken.token)
+          console.log(response);
+          localStorage.setItem("token", response.authToken.token);
           localStorage.setItem("token-expires", response.authToken.expires.toString());
-          this.router.navigate(['/chat']);         
+          localStorage.setItem("refresh-token", response.refreshToken.token);
+          localStorage.setItem("current-user", JSON.stringify(response.response))
+          this.router.navigate(['/chat']);
           return;
         }
       })

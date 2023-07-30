@@ -5,20 +5,15 @@ namespace Infrastructure.SignalR;
 
 public class ChatHub : Hub
 {
-	private readonly Logger<ChatHub> _logger;
 
-	public ChatHub(Logger<ChatHub> logger)
-	{
-		_logger = logger;
-	}
+	public ChatHub() { }
 
 	public override Task OnConnectedAsync()
 	{
-		var httpContext = Context.GetHttpContext();
-		var userId = httpContext.Request.Headers["User"];
+		var userId = Context.GetHttpContext().Request.Query["user-id"].ToString();
 
 		Groups.AddToGroupAsync(Context.ConnectionId, userId);
-		_logger.LogInformation($"{userId} connected.");
+		System.Console.WriteLine($"{userId} connected.");
 
 		return base.OnConnectedAsync();
 	}
