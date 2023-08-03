@@ -36,4 +36,10 @@ export class ChatService {
     const url = this.baseUrl + "/GetUserChats";
     return this.httpClient.get<CustomResponse<Chat[]>>(url);
   }
+
+  getChat = (chatId: string): Observable<CustomResponse<Chat>> => {
+    const url = this.baseUrl + "/GetChat";
+    const params = new HttpParams().append("chatId", chatId)
+    return this.httpClient.get<CustomResponse<Chat>>(url, { params: params });
+  }
 }

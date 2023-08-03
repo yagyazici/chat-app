@@ -1,0 +1,86 @@
+:host {
+	--sender: #4CAF50;
+	--receiver: #303030;
+	--background: #222;
+}
+
+.messages {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.message {
+	border-radius: 20px;
+	padding: 8px 15px;
+	color: white;
+	display: inline-block;
+}
+
+.receiver {
+	align-items: flex-start;
+}
+
+.receiver .message {
+	background-color: var(--receiver);
+	position: relative;
+}
+
+.receiver .message:before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	left: -7px;
+	height: 20px;
+	width: 20px;
+	background: var(--receiver);
+	border-bottom-right-radius: 15px;
+}
+
+.receiver .message:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	left: -10px;
+	width: 10px;
+	height: 20px;
+	background: #222;
+	border-bottom-right-radius: 10px;
+}
+
+.sender {
+	align-items: flex-end;
+}
+
+.sender .message {
+	background: var(--sender);
+	background-attachment: fixed;
+	position: relative;
+}
+
+.sender .message:before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	right: -8px;
+	height: 20px;
+	width: 20px;
+	background: var(--sender);
+	background-attachment: fixed;
+	border-bottom-left-radius: 15px;
+}
+
+.sender .message:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	right: -10px;
+	width: 10px;
+	height: 20px;
+	background: var(--background);
+	border-bottom-left-radius: 10px;
+}

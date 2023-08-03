@@ -30,27 +30,28 @@ export class UserService {
     return this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, authentication);
   }
 
-  refreshToken = async () => {
-    const tokenExpires = new Date(localStorage.getItem("token-expires") || "");
-    const now = new Date();
+  refreshToken = () => {
+    const tokenExpires = new Date(localStorage.getItem("token-expires") || "")
+    const now = new Date()
     if (now < tokenExpires) return;
     const refreshToken = localStorage.getItem("refresh-token") || "";
-    const user = <User>JSON.parse(localStorage.getItem("current-user") || "");
+    const currentUser = localStorage.getItem("current-user");
+    const user = <User>JSON.parse(currentUser || "");
     const userId = user.id
-    const params = new HttpParams().appendAll({ refreshToken, userId })
+    const params = new HttpParams().appendAll({ userId, refreshToken })
     const url = this.baseUrl + "/RefreshToken";
-    await firstValueFrom(this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, null, { params: params })).then(response => {
-      if (response.isSuccessful) {
-        localStorage.setItem("token", response.authToken.token);
-        localStorage.setItem("token-expires", response.authToken.expires.toString());
-        localStorage.setItem("refresh-token", response.refreshToken.token);
-      }
-    });
+    firstValueFrom(this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, null, {
+      params: params
+    })).then(response => {
+      localStorage.setItem("token", response.authToken.token);
+      localStorage.setItem("token-expires", response.authToken.expires.toString());
+      localStorage.setItem("refresh-token", response.refreshToken.token);
+    })
   }
 
   searchUser = (username: string): Observable<User[]> => {
     const url = this.baseUrl + "/SearchUser";
-    var params = new HttpParams().append("username", username);
+    const params = new HttpParams().append("username", username);
     return this.httpClient.get<User[]>(url, { params: params })
   }
 }

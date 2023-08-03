@@ -22,4 +22,7 @@ public class ChatController : ControllerBase
 
 	[HttpGet]
 	public async Task<Response> GetUserChats() => await _chatService.GetUserChats();
+
+	[HttpGet]
+	public async Task<Response> GetChat(string chatId) => await _chatService.GetChat(chatId);
 }

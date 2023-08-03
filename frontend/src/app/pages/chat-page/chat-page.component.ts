@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
 import { User } from 'src/app/models/entities/user';
-import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,12 +11,10 @@ export class ChatPageComponent implements OnInit {
 
   currentUser: User;
   constructor(
-    private signalRService: SignalrService,
-    private userService: UserService
-  ) { }
+    private userService: UserService) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit() {
+    this.userService.refreshToken();
     this.currentUser = <User>JSON.parse(localStorage.getItem("current-user") || "");
-    // this.signalRService.start(this.currentUser.id)
   }
 }

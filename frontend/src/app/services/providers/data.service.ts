@@ -12,8 +12,4 @@ export class DataService {
   user = <User>JSON.parse(localStorage.getItem("current-user") || "{}");
   private userSource = new BehaviorSubject<User>(this.user);
   currentUser = this.userSource.asObservable();
-
-  changeCurrentUser(user: User) {
-    this.userSource.next(user);
-  }
 }

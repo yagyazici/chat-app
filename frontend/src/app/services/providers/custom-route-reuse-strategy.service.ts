@@ -8,19 +8,13 @@ export class CustomRouteReuseStrategyService implements RouteReuseStrategy {
 
   constructor() { }
 
-  shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return false;
-  }
-  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
-    
-  }
-  shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return false;
-  }
-  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
-    return null;
-  }
-  shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    return future.data["shouldReuse"] || false;
-  }
+  shouldDetach = (route: ActivatedRouteSnapshot): boolean => false;
+
+  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void { }
+  
+  shouldAttach = (route: ActivatedRouteSnapshot): boolean => false;
+
+  retrieve = (route: ActivatedRouteSnapshot): DetachedRouteHandle | null => null;
+
+  shouldReuseRoute = (future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean => future.data["shouldReuse"] || false;
 }

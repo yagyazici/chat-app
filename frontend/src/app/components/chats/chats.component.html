@@ -1,3 +1,6 @@
-<div [routerLink]="['/chat', chat.id]" *ngFor="let chat of chats" class="chat rounded">
-	<p>{{receiver(chat.participants)}}</p>
+<div class="inner-chats">
+	<div [routerLink]="['/chat', chat.id]" *ngFor="let chat of chats" class="chat">
+		<p>{{receiver(chat.participants)}}</p>
+		<small *ngIf="chat.messages.length">{{latestMessage(chat.messages).text}}</small>
+	</div>
 </div>

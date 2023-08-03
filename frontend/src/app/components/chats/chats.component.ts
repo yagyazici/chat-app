@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chat } from 'src/app/models/entities/chat';
+import { Message } from 'src/app/models/entities/message';
 import { User } from 'src/app/models/entities/user';
 import { ChatService } from 'src/app/services/chat.service';
 import { DataService } from 'src/app/services/providers/data.service';
@@ -13,7 +14,6 @@ export class ChatsComponent implements OnInit {
 
   user: User;
   chats: Chat[];
-  latestMessage: string;
   constructor(
     private dataService: DataService,
     private chatService: ChatService
@@ -21,10 +21,12 @@ export class ChatsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.dataService.currentUser.subscribe(user => this.user = user)
-    this.chatService.getUserChats().subscribe(response => this.chats = response.response);
+    this.chatService.getUserChats().subscribe(response => this.chats = response.response.reverse());
   }
 
   receiver = (participants: User[]): string => {
     return participants.filter(user => user.id !== this.user.id)[0].username;
   }
+
+  latestMessage = (messages: Message[]):Message => messages[messages.length - 1]
 }

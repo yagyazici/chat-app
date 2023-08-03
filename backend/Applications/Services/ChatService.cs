@@ -85,4 +85,10 @@ public class ChatService : IChatService
 
 		return Success<List<Chat>>.Response(chats);
 	}
+
+	public async Task<Response> GetChat(string chatId)
+	{
+		var chat = await _chatRepository.GetByIdAsync(chatId);
+		return Success<Chat>.Response(chat);
+	}
 }
