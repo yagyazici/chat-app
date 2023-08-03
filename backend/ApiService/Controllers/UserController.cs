@@ -28,5 +28,5 @@ public class UserController : ControllerBase
 
 
 	[HttpGet, Authorize]
-	public async Task<List<UserDto>> SearchUser(string username) => await _userService.SearchUser(username);
+	public async Task<List<UserDto>> Search(string username) => await _userService.Search(username);
 }

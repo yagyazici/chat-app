@@ -29,7 +29,7 @@ public class ChatService : IChatService
 		_chatHubService = chatHubService;
 	}
 
-	public async Task<Response> CreateNewChat(string userId)
+	public async Task<Response> NewChat(string userId)
 	{
 		var currentUserId = _httpContext.GetUserId();
 		var currentUser = await _userRepository.GetByIdAsync(currentUserId);
@@ -53,11 +53,13 @@ public class ChatService : IChatService
 		return Success<Chat>.Response(newChat);
 	}
 
-	public async Task<Response> SendMessage(string chatId, string text)
+	public async Task<Response> Message(string chatId, string text)
 	{
 		var currentUserId = _httpContext.GetUserId();
 
 		var chat = await _chatRepository.GetByIdAsync(chatId);
+
+		chat.LastUpdate = DateTime.Now;
 
 		var receiver = chat.Participants.Where(user => user.Id != currentUserId).FirstOrDefault();
 
@@ -75,18 +77,20 @@ public class ChatService : IChatService
 		return Success<List<Message>>.Response(chat.Messages);
 	}
 
-	public async Task<Response> GetUserChats()
+	public async Task<Response> Chats()
 	{
 		var currentUserId = _httpContext.GetUserId();
 
-		var chats = await _chatRepository.FilterAsync(chat => 
+		var chats = await _chatRepository.FilterAsync(chat =>
 			chat.Participants.Where(user => user.Id == currentUserId).Any()
 		);
+
+		chats = chats.OrderByDescending(chat => chat.LastUpdate).ToList();
 
 		return Success<List<Chat>>.Response(chats);
 	}
 
-	public async Task<Response> GetChat(string chatId)
+	public async Task<Response> Chat(string chatId)
 	{
 		var chat = await _chatRepository.GetByIdAsync(chatId);
 		return Success<Chat>.Response(chat);

@@ -88,7 +88,7 @@ public class UserService : IUserService
 		return Success<string>.Response("user created");
 	}
 
-	public async Task<List<UserDto>> SearchUser(string username)
+	public async Task<List<UserDto>> Search(string username)
 	{
 		var users = await _genericRepository.FilterAsync(user => user.Username == username);
 		var mappedUsers = _mapper.Map<List<UserDto>>(users);

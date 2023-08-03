@@ -24,7 +24,7 @@ export class ChatsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.dataService.currentUser.subscribe(user => this.user = user)
-    this.chatService.getUserChats().subscribe(response => this.chats = response.response.reverse());
+    this.chatService.chats().subscribe(response => this.chats = response.response);
   }
 
   receiver = (participants: User[]): string => {

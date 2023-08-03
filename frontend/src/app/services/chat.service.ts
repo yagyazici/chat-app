@@ -17,14 +17,14 @@ export class ChatService {
     private httpClient: HttpClient
   ) { }
 
-  createNewChat = (userId: string): Observable<CustomResponse<Chat>> => {
-    const url = this.baseUrl + "/CreateNewChat";
+  newChat = (userId: string): Observable<CustomResponse<Chat>> => {
+    const url = this.baseUrl + "/NewChat";
     const params = new HttpParams().append("userId", userId);
     return this.httpClient.post<CustomResponse<Chat>>(url, null, { params: params });
   }
 
-  sendMessage = (chatId: string, text: string): Observable<CustomResponse<Message[]>> => {
-    const url = this.baseUrl + "/SendMessage";
+  message = (chatId: string, text: string): Observable<CustomResponse<Message[]>> => {
+    const url = this.baseUrl + "/Message";
     const params = new HttpParams().appendAll({
       "chatId": chatId,
       "text": text
@@ -32,13 +32,13 @@ export class ChatService {
     return this.httpClient.post<CustomResponse<Message[]>>(url, null, { params: params });
   }
 
-  getUserChats = (): Observable<CustomResponse<Chat[]>> => {
-    const url = this.baseUrl + "/GetUserChats";
+  chats = (): Observable<CustomResponse<Chat[]>> => {
+    const url = this.baseUrl + "/Chats";
     return this.httpClient.get<CustomResponse<Chat[]>>(url);
   }
 
-  getChat = (chatId: string): Observable<CustomResponse<Chat>> => {
-    const url = this.baseUrl + "/GetChat";
+  chat = (chatId: string): Observable<CustomResponse<Chat>> => {
+    const url = this.baseUrl + "/Chat";
     const params = new HttpParams().append("chatId", chatId)
     return this.httpClient.get<CustomResponse<Chat>>(url, { params: params });
   }

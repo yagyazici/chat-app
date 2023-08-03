@@ -15,14 +15,14 @@ public class ChatController : ControllerBase
 	public ChatController(IChatService chatService) => _chatService = chatService;
 	
 	[HttpPost]
-	public async Task<Response> CreateNewChat(string userId) => await _chatService.CreateNewChat(userId);
+	public async Task<Response> NewChat(string userId) => await _chatService.NewChat(userId);
 
 	[HttpPost]
-	public async Task<Response> SendMessage(string chatId, string text) => await _chatService.SendMessage(chatId, text);
+	public async Task<Response> Message(string chatId, string text) => await _chatService.Message(chatId, text);
 
 	[HttpGet]
-	public async Task<Response> GetUserChats() => await _chatService.GetUserChats();
+	public async Task<Response> Chats() => await _chatService.Chats();
 
 	[HttpGet]
-	public async Task<Response> GetChat(string chatId) => await _chatService.GetChat(chatId);
+	public async Task<Response> Chat(string chatId) => await _chatService.Chat(chatId);
 }
