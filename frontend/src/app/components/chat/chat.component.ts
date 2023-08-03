@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chat } from 'src/app/models/entities/chat';
 import { User } from 'src/app/models/entities/user';
 import { ChatService } from 'src/app/services/chat.service';
@@ -12,23 +11,19 @@ import { DataService } from 'src/app/services/providers/data.service';
 })
 export class ChatComponent implements OnInit {
 
+  @Input() chatId: string;
   user: User;
   chat: Chat;
-  chatId: string;
   constructor(
     private chatService: ChatService,
-    private dataService: DataService,
-    private route: ActivatedRoute
+    private dataService: DataService
   ) { }
 
   ngOnInit(): void {
-    this.route.firstChild?.paramMap.subscribe(params => {
-      this.chatId = params.get("chat-id") ?? ""
-    });
     this.dataService.currentUser.subscribe(user => this.user = user);
     this.chatService.getChat(this.chatId).subscribe(response => this.chat = response.response);
   }
 
   messageClass = (userId: string): string => 
-    userId == this.user.id ? "sender messages" : "receiver messages"
+    this.user.id == userId ? "sender messages" : "receiver messages"
 }

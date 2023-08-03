@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/entities/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -9,12 +10,16 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ChatPageComponent implements OnInit {
 
-  currentUser: User;
+  chatId: string;
   constructor(
-    private userService: UserService) { }
+    private userService: UserService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.route.firstChild?.paramMap.subscribe(params => {
+      this.chatId = params.get("chat-id") ?? ""
+    });
     this.userService.refreshToken();
-    this.currentUser = <User>JSON.parse(localStorage.getItem("current-user") || "");
   }
 }

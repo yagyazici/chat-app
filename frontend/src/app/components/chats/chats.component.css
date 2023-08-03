@@ -6,10 +6,15 @@
 .chat {
 	cursor: pointer;
 	color: white;
-	padding-bottom: 1.25rem;
+	padding: 1.25rem;
 	border-bottom: 1px solid rgba(255,255,255,.12);
 	overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.selected {
+	background-color: blueviolet;
+	border-radius: 0.25rem;
 }
 
 .chat p {
