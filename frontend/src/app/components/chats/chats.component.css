@@ -8,6 +8,8 @@
 	color: white;
 	padding-bottom: 1.25rem;
 	border-bottom: 1px solid rgba(255,255,255,.12);
+	overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chat p {
