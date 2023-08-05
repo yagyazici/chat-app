@@ -5,7 +5,7 @@ import { Properties } from 'src/app/constants/properties';
 @Injectable({
   providedIn: 'root'
 })
-export class SignalrService {
+export class SignalRService {
 
   private _connection: HubConnection;
 

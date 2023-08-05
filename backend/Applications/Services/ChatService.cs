@@ -72,7 +72,7 @@ public class ChatService : IChatService
 		chat.Messages.Add(newMessage);
 
 		await _chatRepository.UpdateAsync(chat);
-		await _chatHubService.SendMessage(receiver.Id, text);
+		await _chatHubService.SendMessage(receiver.Id, newMessage);
 
 		return Success<List<Message>>.Response(chat.Messages);
 	}

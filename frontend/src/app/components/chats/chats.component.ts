@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Chat } from 'src/app/models/entities/chat';
 import { Message } from 'src/app/models/entities/message';
 import { User } from 'src/app/models/entities/user';
@@ -18,9 +17,7 @@ export class ChatsComponent implements OnInit {
   chats: Chat[];
   constructor(
     private dataService: DataService,
-    private chatService: ChatService,
-    private activatedRoute: ActivatedRoute
-  ) { }
+    private chatService: ChatService  ) { }
 
   async ngOnInit(): Promise<void> {
     this.dataService.currentUser.subscribe(user => this.user = user)

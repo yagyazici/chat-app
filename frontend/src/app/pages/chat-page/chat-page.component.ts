@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'src/app/models/entities/user';
+import { DataService } from 'src/app/services/providers/data.service';
+import { SignalRService } from 'src/app/services/signalr/signalr.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,16 +11,19 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ChatPageComponent implements OnInit {
 
+  userId: string
   chatId: string;
   constructor(
+    private chatHub: SignalRService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dataService: DataService,
   ) { }
 
   ngOnInit() {
-    this.route.firstChild?.paramMap.subscribe(params => {
-      this.chatId = params.get("chat-id") ?? ""
-    });
     this.userService.refreshToken();
+    this.dataService.currentUser.subscribe(user => this.userId = user.id);
+    if (this.userId) this.chatHub.start(this.userId)
+    this.route.firstChild?.paramMap.subscribe(params => this.chatId = params.get("chat-id") ?? "");
   }
 }

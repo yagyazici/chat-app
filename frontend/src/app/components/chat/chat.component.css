@@ -4,19 +4,42 @@
 	--background: #222;
 }
 
-.messages {
-	margin-top: 30px;
+::ng-deep app-chat {
+	display: block;
+	height: 100%;
+}
+
+.message-form {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.mat-mdc-form-field {
+	width: 100%;
+}
+
+.inner-chat {
 	display: flex;
 	flex-direction: column;
+	height: 90%;
+	overflow: scroll;
+	padding-inline: 15px;
+	gap: 0.5rem;
+}
+
+.messages {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
 .message {
 	border-radius: 20px;
-    padding: 8px 15px;
-    color: white;
-    display: inline-block;
-    word-wrap: anywhere;
-    max-width: 25%;
+	padding: 8px 15px;
+	color: white;
+	display: inline-block;
+	word-wrap: anywhere;
+	max-width: 50%;
 }
 
 .receiver {
@@ -24,11 +47,12 @@
 }
 
 .receiver .message {
+	margin-right: 25%;
 	background-color: var(--receiver);
 	position: relative;
 }
 
-.receiver .message:before {
+.receiver .message.last:before {
 	content: "";
 	position: absolute;
 	z-index: 0;
@@ -40,7 +64,7 @@
 	border-bottom-right-radius: 15px;
 }
 
-.receiver .message:after {
+.receiver .message.last:after {
 	content: "";
 	position: absolute;
 	z-index: 1;
@@ -48,7 +72,7 @@
 	left: -10px;
 	width: 10px;
 	height: 20px;
-	background: #222;
+	background: var(--background);
 	border-bottom-right-radius: 10px;
 }
 
@@ -57,12 +81,14 @@
 }
 
 .sender .message {
+	color: white;
+	margin-left: 25%;
 	background: var(--sender);
 	background-attachment: fixed;
 	position: relative;
 }
 
-.sender .message:before {
+.sender .message.last:before {
 	content: "";
 	position: absolute;
 	z-index: 0;
@@ -75,7 +101,7 @@
 	border-bottom-left-radius: 15px;
 }
 
-.sender .message:after {
+.sender .message.last:after {
 	content: "";
 	position: absolute;
 	z-index: 1;
