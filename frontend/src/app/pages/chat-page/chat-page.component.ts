@@ -15,13 +15,11 @@ export class ChatPageComponent implements OnInit {
   chatId: string;
   constructor(
     private chatHub: SignalRService,
-    private userService: UserService,
     private route: ActivatedRoute,
     private dataService: DataService,
   ) { }
 
   ngOnInit() {
-    this.userService.refreshToken();
     this.dataService.currentUser.subscribe(user => this.userId = user.id);
     if (this.userId) this.chatHub.start(this.userId)
     this.route.firstChild?.paramMap.subscribe(params => this.chatId = params.get("chat-id") ?? "");

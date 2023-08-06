@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Chat } from 'src/app/models/entities/chat';
 import { Message } from 'src/app/models/entities/message';
@@ -24,7 +24,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   constructor(
     private chatService: ChatService,
     private dataService: DataService,
-    private chatHub: SignalRService
+    private chatHub: SignalRService,
   ) { }
 
   ngAfterViewChecked(): void {
@@ -42,7 +42,20 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     if (this.chatId) this.chatService.chat(this.chatId).subscribe(response => this.chat = response.response);
   }
 
-  messageClass = (userId: string): string => this.user.id == userId ? "sender messages" : "receiver messages"
+  messageDirection = (userId: string): string => this.user.id == userId ? "sender messages" : "receiver messages"
+
+  curvyMessage = (idx: number, userId: string): string => {
+    let classes = "message";
+    if (!this.hasNextIndex(this.chat.messages, idx)) {
+      return classes;
+    }
+    const nextMessage = this.chat.messages[idx + 1];
+    const currentMessage = this.chat.messages[idx];
+    if (currentMessage.userId != nextMessage.userId) {
+      classes += " last"
+    }
+    return classes;
+  }
 
   message = () => {
     const message = this.messageForm.value.message;
@@ -57,4 +70,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       container.scrollTop = container.scrollHeight;
     }
   }
+
+  hasNextIndex = <T>(arr: T[], currentIndex: number): boolean => currentIndex >= 0 && currentIndex < arr.length - 1;
 }

@@ -30,7 +30,7 @@ export class UserService {
     return this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, authentication);
   }
 
-  refreshToken = () => {
+  refreshToken = async () => {    
     const tokenExpires = new Date(localStorage.getItem("token-expires") || "")
     const now = new Date()
     if (now < tokenExpires) return;
@@ -40,7 +40,7 @@ export class UserService {
     const userId = user.id
     const params = new HttpParams().appendAll({ userId, refreshToken })
     const url = this.baseUrl + "/RefreshToken";
-    firstValueFrom(this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, null, {
+    await firstValueFrom(this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, null, {
       params: params
     })).then(response => {
       localStorage.setItem("token", response.authToken.token);
