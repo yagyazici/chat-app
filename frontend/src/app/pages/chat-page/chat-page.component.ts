@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/providers/data.service';
 import { SignalRService } from 'src/app/services/signalr/signalr.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-chat-page',

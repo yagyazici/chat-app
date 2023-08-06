@@ -45,6 +45,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 		return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
 	}
 
+	public async Task<List<TEntity>> Filter(FilterDefinition<TEntity> filter)
+    {
+        return await _collection.FindSync(filter).ToListAsync();
+    }
+
 	public async Task<List<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate)
 	{
 		return await _collection.Find(predicate).ToListAsync();

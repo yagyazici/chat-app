@@ -6,12 +6,14 @@ import { ChatsComponent } from './components/chats/chats.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { AuthguardService } from './services/providers/authguard.service';
 import { CustomRouteReuseStrategyService } from './services/providers/custom-route-reuse-strategy.service';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: "login", component: AuthPageComponent },
   { path: "register", component: AuthPageComponent },
   {
     path: "chat", component: ChatPageComponent, data: { shouldReuse: false }, canActivate: [AuthguardService], children: [
+      { path: "", component: ProfileComponent },
       { path: "", component: ChatComponent },
       { path: ":chat-id", component: ChatsComponent }
     ]

@@ -13,6 +13,7 @@ import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { MaterialModule } from './modules/material.module';
 import { SearchComponent } from './components/search/search.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { EmptyComponent } from './components/empty/empty.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     ChatComponent,
     SearchComponent,
     ProfileComponent,
+    EmptyComponent,
   ],
   imports: [
     BrowserModule,

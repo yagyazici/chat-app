@@ -1,9 +1,11 @@
 <div class="container rounded">
 	<div class="chats">
+		<app-profile></app-profile>
 		<app-chats [chatId]="chatId"></app-chats>
 	</div>
 	<mat-divider [vertical]="true"></mat-divider>
 	<div class="chat">
-		<app-chat [chatId]="chatId"></app-chat>
+		<app-empty *ngIf="!chatId"></app-empty>
+		<app-chat *ngIf="chatId" [chatId]="chatId"></app-chat>
 	</div>
 </div>

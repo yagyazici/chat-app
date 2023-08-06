@@ -4,6 +4,7 @@ using Domain.Dtos.Responses;
 using Domain.Entities;
 using Domain.Repository;
 using Domain.Services;
+using MongoDB.Driver;
 
 namespace Infrastructure.Services;
 
@@ -90,7 +91,9 @@ public class UserService : IUserService
 
 	public async Task<List<UserDto>> Search(string username)
 	{
-		var users = await _genericRepository.FilterAsync(user => user.Username == username);
+		var builder = Builders<User>.Filter;
+        var filter = builder.Regex("Username", "^" + username + ".*");
+		var users = await _genericRepository.Filter(filter);
 		var mappedUsers = _mapper.Map<List<UserDto>>(users);
 		return mappedUsers;
 	}
