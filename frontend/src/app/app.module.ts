@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { MaterialModule } from './modules/material.module';
 import { SearchComponent } from './components/search/search.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SearchComponent } from './components/search/search.component';
     ChatsComponent,
     ChatComponent,
     SearchComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

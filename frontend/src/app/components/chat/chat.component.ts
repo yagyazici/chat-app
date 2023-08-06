@@ -44,16 +44,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   messageDirection = (userId: string): string => this.user.id == userId ? "sender messages" : "receiver messages"
 
-  curvyMessage = (idx: number, userId: string): string => {
+  curvyMessage = (index: number): string => {
     let classes = "message";
-    if (!this.hasNextIndex(this.chat.messages, idx)) {
+    if (!this.hasNextIndex(this.chat.messages, index)) {
+      if (this.chat.messages.length == index + 1) classes += " last"
       return classes;
     }
-    const nextMessage = this.chat.messages[idx + 1];
-    const currentMessage = this.chat.messages[idx];
-    if (currentMessage.userId != nextMessage.userId) {
-      classes += " last"
-    }
+    const nextMessage = this.chat.messages[index + 1];
+    const currentMessage = this.chat.messages[index];
+    if (currentMessage.userId != nextMessage.userId) classes += " last"
     return classes;
   }
 
