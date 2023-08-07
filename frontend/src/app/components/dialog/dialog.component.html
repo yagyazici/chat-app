@@ -1,0 +1,7 @@
+<p>dialog works!</p>
+<div class="dialog-overlay" *ngIf="isOpen">
+	<div class="dialog-content">
+		<ng-content></ng-content>
+		<button class="close-button" (click)="onClose()">Close</button>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+::ng-deep .mdc-button {
+	min-width: 0 !important;
+}
+.profile {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+p {
+	color: white;
+	font-weight: bold;
+	margin: 0;
+}

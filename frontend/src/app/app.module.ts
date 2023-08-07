@@ -14,6 +14,7 @@ import { MaterialModule } from './modules/material.module';
 import { SearchComponent } from './components/search/search.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EmptyComponent } from './components/empty/empty.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { EmptyComponent } from './components/empty/empty.component';
     SearchComponent,
     ProfileComponent,
     EmptyComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,

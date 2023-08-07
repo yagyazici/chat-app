@@ -22,7 +22,7 @@ export class ChatsComponent implements OnInit {
     private userService: UserService
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit() {
     await this.userService.refreshToken();
     this.dataService.currentUser.subscribe(user => this.user = user)
     this.chatService.chats().subscribe(response => this.chats = response.response);

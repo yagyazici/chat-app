@@ -1,1 +1,11 @@
-<p>profile works!</p>
+<div class="profile">
+	<p>{{user.username}}</p>
+	<button mat-button class="button" [matMenuTriggerFor]="profileMenu" (onMenuClose)="onClose()"
+		(onMenuOpen)="onOpen()">
+			<i [@rotatedState]="state" class="fa-solid fa-angle-down text-white my-auto"></i>
+	</button>
+</div>
+<mat-menu #profileMenu="matMenu" xPosition="after">
+	<button mat-menu-item (click)="logout()">Log out</button>
+</mat-menu>
+<mat-divider></mat-divider>

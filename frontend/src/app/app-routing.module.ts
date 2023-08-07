@@ -14,8 +14,8 @@ const routes: Routes = [
   {
     path: "chat", component: ChatPageComponent, data: { shouldReuse: false }, canActivate: [AuthguardService], children: [
       { path: "", component: ProfileComponent },
-      { path: "", component: ChatComponent },
-      { path: ":chat-id", component: ChatsComponent }
+      { path: "", component: ChatsComponent },
+      { path: ":chat-id", component: ChatComponent }
     ]
   },
   { path: "**", redirectTo: "chat", pathMatch: "full" }
