@@ -1,1 +1,22 @@
-<p>search works!</p>
+<div class="search">
+	<button mat-raised-button color="accent" (click)="openDialog(createChat)">New Chat</button>
+	<mat-divider></mat-divider>
+</div>
+<ng-template #createChat>
+	<div class="dialog">
+		<form [formGroup]="searchForm" class="search-form">
+			<mat-form-field appearance="outline">
+				<mat-label>Username</mat-label>
+				<input matInput formControlName="message" type="text" />
+			</mat-form-field>
+		</form>
+		<div class="users">
+			<h1 *ngFor="let user of users">
+				{{user}}
+			</h1>
+		</div>
+		<div class="button">
+			<button mat-button (click)="closeDialog()">Close</button>
+		</div>
+	</div>
+</ng-template>

@@ -28,12 +28,10 @@ export class ChatsComponent implements OnInit {
     this.chatService.chats().subscribe(response => this.chats = response.response);
   }
 
-  receiver = (participants: User[]): string => {
-    return participants.filter(user => user.id !== this.user.id)[0].username;
-  }
+  receiver = (participants: User[]): string => 
+    participants.filter(user => user.id !== this.user.id)[0].username;
 
-  chatClasses = (chatId: string) =>
-    this.chatId == chatId ? "chat selected" : "chat"
+  chatClasses = (chatId: string) => this.chatId == chatId ? "chat selected" : "chat";
 
   latestMessage = (messages: Message[]): Message => messages[messages.length - 1]
 }

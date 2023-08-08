@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from 'src/app/models/entities/user';
 import { DataService } from 'src/app/services/providers/data.service';
 import { UserService } from 'src/app/services/user.service';
@@ -17,32 +18,31 @@ import { UserService } from 'src/app/services/user.service';
     ])
   ],
 })
-export class ProfileComponent implements OnInit{
+export class ProfileComponent implements OnInit {
 
   user: User;
-  state: string = 'default';
-  isDialogOpen: boolean = false;
+  state: string = "default";
 
   constructor(
     private userService: UserService,
-    private dataService: DataService
-  ) {}
+    private dataService: DataService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.dataService.currentUser.subscribe(user => this.user = user);
   }
 
-  logout = () => "return";
+  logout = () => this.userService.logout();
 
   onClose = () => this.state = "default";
 
   onOpen = () => this.state = "rotated";
 
-  openDialog(): void {
-    this.isDialogOpen = true;
-  }
-
-  closeDialog(): void {
-    this.isDialogOpen = false;
+  openDialog(templateRef: TemplateRef<any>) {
+    var dialog = this.dialog.open(templateRef);
+    dialog.afterClosed().subscribe(_ => {
+      console.log("bruh");
+    })
   }
 }

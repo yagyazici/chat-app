@@ -8,6 +8,7 @@ import { AuthToken } from '../models/auth/auth-token';
 import { TokenResponse } from '../models/responses/token-response';
 import { Response } from '../models/base/response';
 import { Properties } from '../constants/properties';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class UserService {
   baseUrl = `${Properties.URL}/User`;
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private router: Router
   ) { }
 
   register = (authentication: Authentication): Observable<CustomResponse<string>> => {
@@ -28,6 +30,11 @@ export class UserService {
   login = (authentication: Authentication): Observable<TokenResponse<User> & CustomResponse<Response>> => {
     const url = this.baseUrl + "/Login";
     return this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, authentication);
+  }
+
+  logout = ( ) => {
+    localStorage.clear();
+    this.router.navigate(["/login"])
   }
 
   refreshToken = async () => {    
