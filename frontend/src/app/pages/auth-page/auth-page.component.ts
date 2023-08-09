@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Authentication } from 'src/app/models/auth/authentication';
 import { AuthForm } from 'src/app/models/forms/auth-form';
+import { DataService } from 'src/app/services/providers/data.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class AuthPageComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private dataService: DataService
   ) { }
 
   ngOnInit(): void {
@@ -53,11 +55,11 @@ export class AuthPageComponent implements OnInit {
     if (this.currentUrl == "login"){
       this.userService.login(authenticate).subscribe(response => {
         if (response.isSuccessful) {
-          console.log(response);
           localStorage.setItem("token", response.authToken.token);
           localStorage.setItem("token-expires", response.authToken.expires.toString());
           localStorage.setItem("refresh-token", response.refreshToken.token);
           localStorage.setItem("current-user", JSON.stringify(response.response))
+          this.dataService.changeCurrentUser(response.response)
           this.router.navigate(['/chat']);
           return;
         }

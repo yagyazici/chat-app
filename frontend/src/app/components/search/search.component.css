@@ -28,8 +28,14 @@
 }
 
 .users {
+	min-height: 350px;
 	height: 350px;
 	overflow: scroll;
+}
+
+.user-button {
+	width: 100%;
+	justify-content: flex-start;
 }
 
 .button {

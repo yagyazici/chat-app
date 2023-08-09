@@ -1,10 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Chat } from 'src/app/models/entities/chat';
 import { User } from 'src/app/models/entities/user';
 import { SearchForm } from 'src/app/models/forms/search-form';
+import { ChatService } from 'src/app/services/chat.service';
 import { DataService } from 'src/app/services/providers/data.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -15,11 +17,17 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SearchComponent implements OnInit {
 
+  user: User;
   users: User[];
   searchForm: FormGroup<SearchForm>;
+  chats: Chat[];
+
   constructor(
+    private dataService: DataService,
     private userService: UserService,
-    private dialog: MatDialog
+    private chatService: ChatService,
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -33,10 +41,12 @@ export class SearchComponent implements OnInit {
       if (username) this.search(username);
       else this.users = [];
     })
+    this.dataService.currentChats.subscribe(chats => this.chats = chats)
+    this.dataService.currentUser.subscribe(user => this.user = user)
   }
 
   search = (username: string) => {
-    this.userService.search(username).subscribe(users => this.users = users);
+    this.userService.search(username).subscribe(users => this.users = users.filter(user => user.id != this.user.id));
   }
 
   openDialog(templateRef: TemplateRef<any>) {
@@ -44,6 +54,23 @@ export class SearchComponent implements OnInit {
       minHeight: "500px",
       minWidth: "450px"
     });
+  }
+
+  newChat = (userId: string) => {
+    console.log(userId);
+    const chat = this.chats.filter(chat => {
+      return chat.participants.some(user => user.id === userId);
+    })[0];
+    if (chat) {
+      this.router.navigate(["chat", chat.id])
+      this.closeDialog();
+      return;
+    }
+    this.chatService.newChat(userId).subscribe(response => {
+      this.dataService.addChat(response.response);
+      this.router.navigate(["chat", response.response.id])
+      this.closeDialog();
+    })
   }
 
   closeDialog = () => this.dialog.closeAll();

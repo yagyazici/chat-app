@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dataService.currentUser.subscribe(user => this.user = user);
+    this.dataService.currentUser.subscribe(user => this.user = user);    
   }
 
   logout = () => this.userService.logout();

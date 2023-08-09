@@ -5,4 +5,6 @@ export class Chat {
 	id: string;
 	participants: User[];
 	messages: Message[];
+	lastUpdate: Date;
+	seen: boolean
 }

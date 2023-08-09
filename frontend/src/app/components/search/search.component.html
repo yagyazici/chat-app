@@ -11,9 +11,10 @@
 			</mat-form-field>
 		</form>
 		<div class="users">
-			<h1 *ngFor="let user of users">
-				{{user}}
-			</h1>
+			<div *ngFor="let user of users" class="inner-users">
+				<button mat-button class="user-button" (click)="newChat(user.id)">{{user.username}}</button>
+				<mat-divider></mat-divider>
+			</div>
 		</div>
 		<div class="button">
 			<button mat-button (click)="closeDialog()">Close</button>

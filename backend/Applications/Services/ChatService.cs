@@ -4,6 +4,7 @@ using Domain.Dtos.Responses;
 using Domain.Entities;
 using Domain.Repository;
 using Domain.Services;
+using MongoDB.Bson;
 
 namespace Applications.Services;
 
@@ -43,12 +44,13 @@ public class ChatService : IChatService
 
 		var newChat = new Chat
 		{
+			Id = ObjectId.GenerateNewId().ToString(),
 			Participants = participants,
 			Messages = new List<Message>()
 		};
 
-		await _chatHubService.CreateChatMessage(userId);
 		await _chatRepository.AddAsync(newChat);
+		await _chatHubService.CreateChatMessage(userId, newChat);
 
 		return Success<Chat>.Response(newChat);
 	}
@@ -70,9 +72,15 @@ public class ChatService : IChatService
 		};
 
 		chat.Messages.Add(newMessage);
+		var participants = chat.Participants.Select(participants => participants.Id).ToList();
+		var sendMessage = new SendMessageDto
+		{
+			chatId = chatId,
+			message = newMessage
+		};
 
 		await _chatRepository.UpdateAsync(chat);
-		await _chatHubService.SendMessage(receiver.Id, newMessage);
+		await _chatHubService.SendMessage(participants, sendMessage);
 
 		return Success<List<Message>>.Response(chat.Messages);
 	}

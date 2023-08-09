@@ -4,6 +4,7 @@ import { Chat } from 'src/app/models/entities/chat';
 import { Message } from 'src/app/models/entities/message';
 import { User } from 'src/app/models/entities/user';
 import { MessageForm } from 'src/app/models/forms/message-form';
+import { SendMessage } from 'src/app/models/responses/send-message';
 import { ChatService } from 'src/app/services/chat.service';
 import { DataService } from 'src/app/services/providers/data.service';
 import { SignalRService } from 'src/app/services/signalr/signalr.service';
@@ -35,8 +36,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.messageForm = new FormGroup({
       message: new FormControl()
     })
-    this.chatHub.on("ReceiveNewMessage", (message: Message) => {
-      this.chat.messages.push(message);
+    this.chatHub.on("ReceiveNewMessage", (sendMessage: SendMessage) => {
+      console.log(sendMessage);      
+      this.chat.messages.push(sendMessage.message);
     })
     this.dataService.currentUser.subscribe(user => this.user = user);
     if (this.chatId) this.chatService.chat(this.chatId).subscribe(response => this.chat = response.response);

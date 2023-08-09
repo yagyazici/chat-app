@@ -4,6 +4,9 @@
 }
 
 .chat {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	cursor: pointer;
 	color: white;
 	padding: 1.25rem;
@@ -24,4 +27,6 @@ p {
 
 small {
 	color: lightgray;
+	white-space: nowrap;
+    overflow: hidden;
 }

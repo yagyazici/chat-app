@@ -9,6 +9,7 @@ import { TokenResponse } from '../models/responses/token-response';
 import { Response } from '../models/base/response';
 import { Properties } from '../constants/properties';
 import { Router } from '@angular/router';
+import { SignalRService } from './signalr/signalr.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class UserService {
 
   constructor(
     private httpClient: HttpClient,
+    private signalRService: SignalRService,
     private router: Router
   ) { }
 
@@ -34,6 +36,7 @@ export class UserService {
 
   logout = ( ) => {
     localStorage.clear();
+    this.signalRService.off();
     this.router.navigate(["/login"])
   }
 

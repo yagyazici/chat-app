@@ -1,3 +1,4 @@
+using Domain.Dtos;
 using Domain.Entities;
 using Domain.Services;
 using Microsoft.AspNetCore.SignalR;
@@ -13,13 +14,13 @@ public class ChatHubService : IChatHubService
 		_hubContext = hubContext;
 	}
 
-	public async Task CreateChatMessage(string receiverId)
+	public async Task CreateChatMessage(string receiverId, Chat chat)
 	{
-		await _hubContext.Clients.Group(receiverId).SendAsync("ReceiveNewChat", receiverId);
+		await _hubContext.Clients.Group(receiverId).SendAsync("ReceiveNewChat", chat);
 	}
 
-	public async Task SendMessage(string receiverId, Message message)
+	public async Task SendMessage(List<string> ids, SendMessageDto sendMessage)
     {
-        await _hubContext.Clients.Group(receiverId).SendAsync("ReceiveNewMessage", message);
+        await _hubContext.Clients.Groups(ids).SendAsync("ReceiveNewMessage", sendMessage);
     }
 }
