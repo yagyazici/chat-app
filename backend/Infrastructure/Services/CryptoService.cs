@@ -8,19 +8,15 @@ public class CryptoService : ICryptoService
 {
 	public void HashPassword(string password, out byte[] passwordHash, out byte[] passwordSalt)
 	{
-		using (HMACSHA512 hmac = new())
-        {
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-        }
-	}
+        using HMACSHA512 hmac = new();
+        passwordSalt = hmac.Key;
+        passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+    }
 
 	public bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
 	{
-		using (var hmac = new HMACSHA512(passwordSalt))
-        {
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return computedHash.SequenceEqual(passwordHash);
-        }
-	}
+        using var hmac = new HMACSHA512(key: passwordSalt);
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return computedHash.SequenceEqual(passwordHash);
+    }
 }

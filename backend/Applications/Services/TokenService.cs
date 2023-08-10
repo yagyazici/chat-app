@@ -14,17 +14,12 @@ namespace Infrastructure.Services;
 
 public class TokenService : ITokenService
 {
-	private readonly IHttpContextService _httpContextService;
 	private readonly string _token;
 
-	public TokenService(IOptions<TokenSettings> tokenSettings, IHttpContextService httpContextService)
-	{
-		_token = tokenSettings.Value.Token;
-		_httpContextService = httpContextService;
-	}
+    public TokenService(IOptions<TokenSettings> tokenSettings) => _token = tokenSettings.Value.Token;
 
-	public RefreshToken CreateRefreshToken() => new RefreshToken
-	{
+    public RefreshToken CreateRefreshToken() => new()
+    {
 		Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
 	};
 

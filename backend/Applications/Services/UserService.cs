@@ -13,20 +13,17 @@ public class UserService : IUserService
 	private readonly IGenericRepository<User> _genericRepository;
 	private readonly ITokenService _tokenService;
 	private readonly ICryptoService _cryptoService;
-	private readonly IHttpContextService _httpContextService;
 	private readonly IMapper _mapper;
 
 	public UserService(
 		IGenericRepository<User> genericRepository,
 		ITokenService tokenService,
 		ICryptoService cryptoService,
-		IHttpContextService httpContextService,
 		IMapper mapper)
 	{
 		_genericRepository = genericRepository;
 		_tokenService = tokenService;
 		_cryptoService = cryptoService;
-		_httpContextService = httpContextService;
 		_mapper = mapper;
 	}
 
