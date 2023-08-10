@@ -4,7 +4,6 @@ using Domain.Dtos.Responses;
 using Domain.Entities;
 using Domain.Repository;
 using Domain.Services;
-using Infrastructure.SignalR;
 using MongoDB.Bson;
 
 namespace Applications.Services;
@@ -105,13 +104,14 @@ public class ChatService : IChatService
 
 		var chat = await _chatRepository.GetByIdAsync(chatId);
 		var updatedMessages = chat.Messages.Select(message =>
-		{
-			if (!message.SeenList.Contains(userId))
-			{
-				message.SeenList.Add(userId);
-			}
-			return message;
-		}).ToList();
+        {
+            if (!message.SeenList.Contains(userId))
+            {
+                message.SeenList.Add(userId);
+                return message;
+            }
+            return message;
+        }).ToList();
 
 		chat.Messages = updatedMessages;
 
