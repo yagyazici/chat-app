@@ -1,7 +1,7 @@
 <div #scrollContainer class="inner-chat">
-    <div *ngFor="let message of chat?.messages; let index = index" [class]="messageDirection(message.userId)">
+    <div *ngFor="let message of chat?.Messages; let index = index; trackBy:trackyByIndex" [class]="messageDirection(message.UserId)">
         <div [class]="curvyMessage(index)">
-            {{message.text}}
+            {{message.Text}}
         </div>
     </div>
 </div>

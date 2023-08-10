@@ -64,4 +64,9 @@ export class UserService {
     const params = new HttpParams().append("username", username);
     return this.httpClient.get<User[]>(url, { params: params })
   }
+
+  getUsers = (): Observable<User[]> => {
+    const url = this.baseUrl + "/Users";
+    return this.httpClient.get<User[]>(url)
+  }
 }

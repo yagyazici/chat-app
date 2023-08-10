@@ -1,3 +1,3 @@
 export class RefreshToken {
-	token: string;
+	Token: string;
 }

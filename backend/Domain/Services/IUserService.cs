@@ -8,4 +8,5 @@ public interface IUserService
 	Task<Response> Register(Authentication request);
 	Task<Response> Login(Authentication request);
 	Task<Response> RefreshToken(string refreshToken, string userId);
+	Task<List<UserDto>> Users();
 }

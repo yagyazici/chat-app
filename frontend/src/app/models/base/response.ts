@@ -1,3 +1,3 @@
 export class Response {
-	isSuccessful: boolean;
+	IsSuccessful: boolean;
 }

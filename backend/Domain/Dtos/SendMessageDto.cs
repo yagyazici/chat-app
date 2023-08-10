@@ -4,6 +4,6 @@ namespace Domain.Dtos;
 
 public class SendMessageDto
 {
-	public string chatId { get; set; }
-	public Message message { get; set; }
+	public string ChatId { get; set; }
+	public Message Message { get; set; }
 }

@@ -1,6 +1,7 @@
 using Applications;
 using Domain.Settings;
 using Infrastructure;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+	options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

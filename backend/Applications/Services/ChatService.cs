@@ -4,6 +4,7 @@ using Domain.Dtos.Responses;
 using Domain.Entities;
 using Domain.Repository;
 using Domain.Services;
+using Infrastructure.SignalR;
 using MongoDB.Bson;
 
 namespace Applications.Services;
@@ -63,20 +64,20 @@ public class ChatService : IChatService
 
 		chat.LastUpdate = DateTime.Now;
 
-		var receiver = chat.Participants.Where(user => user.Id != currentUserId).FirstOrDefault();
-
 		var newMessage = new Message
 		{
 			UserId = currentUserId,
 			Text = text
 		};
 
+		newMessage.SeenList.Add(currentUserId);
+
 		chat.Messages.Add(newMessage);
 		var participants = chat.Participants.Select(participants => participants.Id).ToList();
 		var sendMessage = new SendMessageDto
 		{
-			chatId = chatId,
-			message = newMessage
+			ChatId = chatId,
+			Message = newMessage,
 		};
 
 		await _chatRepository.UpdateAsync(chat);
@@ -100,7 +101,22 @@ public class ChatService : IChatService
 
 	public async Task<Response> Chat(string chatId)
 	{
+		var userId = _httpContext.GetUserId();
+
 		var chat = await _chatRepository.GetByIdAsync(chatId);
+		var updatedMessages = chat.Messages.Select(message =>
+		{
+			if (!message.SeenList.Contains(userId))
+			{
+				message.SeenList.Add(userId);
+			}
+			return message;
+		}).ToList();
+
+		chat.Messages = updatedMessages;
+
+		await _chatRepository.UpdateAsync(chat);
+
 		return Success<Chat>.Response(chat);
 	}
 }

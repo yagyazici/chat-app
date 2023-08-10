@@ -1,4 +1,5 @@
 export class Message {
-	userId: string;
-	text: string;
+	UserId: string;
+	Text: string;
+	SeenList: string[];
 }

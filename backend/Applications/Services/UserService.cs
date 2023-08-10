@@ -30,6 +30,12 @@ public class UserService : IUserService
 		_mapper = mapper;
 	}
 
+	public async Task<List<UserDto>> Users()
+	{
+		var users = await _genericRepository.GetAllAsync();
+		return _mapper.Map<List<UserDto>>(users);
+	}
+
 	public async Task<Response> Login(Authentication request)
 	{
 		var checkUser = await _genericRepository.AnyAsync(entity => entity.Username == request.Username);
@@ -92,7 +98,7 @@ public class UserService : IUserService
 	public async Task<List<UserDto>> Search(string username)
 	{
 		var builder = Builders<User>.Filter;
-        var filter = builder.Regex("Username", "^" + username + ".*");
+		var filter = builder.Regex("Username", "^" + username + ".*");
 		var users = await _genericRepository.Filter(filter);
 		var mappedUsers = _mapper.Map<List<UserDto>>(users);
 		return mappedUsers;

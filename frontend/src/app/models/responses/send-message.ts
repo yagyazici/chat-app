@@ -1,6 +1,6 @@
 import { Message } from "../entities/message";
 
 export class SendMessage {
-	chatId: string;
-	message: Message;
+	ChatId: string;
+	Message: Message;
 }

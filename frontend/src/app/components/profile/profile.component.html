@@ -1,10 +1,39 @@
 <div class="profile">
-	<p>{{user.username}}</p>
+	<p>{{user.Username}}</p>
 	<button mat-button class="button" [matMenuTriggerFor]="profileMenu" (onMenuClose)="onClose()"
 		(onMenuOpen)="onOpen()">
 		<i [@rotatedState]="state" class="fa-solid fa-angle-down text-white my-auto"></i>
 	</button>
 </div>
 <mat-menu #profileMenu="matMenu" xPosition="before">
+	<button mat-menu-item (click)="openDialog(createChat, 'single')">New Chat</button>
+	<button mat-menu-item (click)="openDialog(createGroupChat, 'group')">New Group Chat</button>
 	<button mat-menu-item (click)="logout()">Log out</button>
 </mat-menu>
+
+<ng-template #createChat>
+	<div class="dialog">
+		<form [formGroup]="searchForm" class="search-form">
+			<mat-form-field appearance="outline">
+				<mat-label>Username</mat-label>
+				<input matInput formControlName="message" type="text" />
+			</mat-form-field>
+		</form>
+		<div class="users">
+			<div *ngFor="let user of users" class="inner-users">
+				<button mat-button class="user-button" (click)="newChat(user.Username)">{{user.Username}}</button>
+				<mat-divider></mat-divider>
+			</div>
+		</div>
+		<div class="button">
+			<button mat-button (click)="closeDialog()">Close</button>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #createGroupChat>
+	<div class="dialog">
+
+		<mat-checkbox *ngFor="let user of allUsers" labelPosition="before" [value]="user.Id">{{user.Username}}</mat-checkbox>
+	</div>
+</ng-template>

@@ -19,7 +19,7 @@ export class ChatPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataService.currentUser.subscribe(user => this.userId = user.id);
+    this.dataService.currentUser.subscribe(user => this.userId = user.Id);
     if (this.userId) this.chatHub.start(this.userId)
     this.route.firstChild?.paramMap.subscribe(params => this.chatId = params.get("chat-id") ?? "");
   }

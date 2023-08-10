@@ -2,9 +2,8 @@ import { Message } from "./message";
 import { User } from "./user";
 
 export class Chat {
-	id: string;
-	participants: User[];
-	messages: Message[];
-	lastUpdate: Date;
-	seen: boolean
+	Id: string;
+	Participants: User[];
+	Messages: Message[];
+	LastUpdate: Date;
 }

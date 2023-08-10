@@ -1,9 +1,9 @@
 <div class="inner-chats">
-	<div [routerLink]="['/chat', chat.id]" *ngFor="let chat of chats" [class]="chatClasses(chat.id)">
+	<div [routerLink]="['/chat', chat.Id]" *ngFor="let chat of chats" [class]="chatClasses(chat.Id)">
 		<div>
-			<p>{{receiver(chat.participants)}}</p>
-			<small *ngIf="chat.messages.length">{{latestMessage(chat.messages).text}}</small>
+			<p>{{receiver(chat.Participants)}}</p>
+			<small *ngIf="chat.Messages.length">{{latestMessage(chat.Messages).Text}}</small>
 		</div>
-		<i class="fa-solid fa-circle" style="color: #4d22b3;"></i>
+		<i *ngIf="messageSeen(chat, latestMessage(chat.Messages))" class="fa-solid fa-circle" style="color: white;"></i>
 	</div>
 </div>

@@ -30,37 +30,33 @@ export class ChatsComponent implements OnInit {
     await this.userService.refreshToken();
     this.dataService.currentUser.subscribe(user => this.user = user)
     this.chatService.chats().subscribe(response => {
-      this.chats = response.response
+      this.chats = response.Response
       this.dataService.changeChats(this.chats)
     });
     this.dataService.currentChats.subscribe(chats => this.chats = chats)
-
     this.chatHub.on("ReceiveNewChat", (chat: Chat) => {
       this.dataService.addChat(chat);
     });
-    // this.seen()
     this.chatHub.on("ReceiveNewMessage", (sendMessage: SendMessage) => {
-      const chatIndex = this.chats.findIndex(chat => chat.id === sendMessage.chatId);
+      const chatIndex = this.chats.findIndex(chat => chat.Id === sendMessage.ChatId);
       if (chatIndex !== -1) {
         const chat = this.chats[chatIndex];
-        if (chat.id !== this.chatId) chat.seen = false;
-        chat.messages.push(sendMessage.message);
-        chat.lastUpdate = new Date();
-        this.chats.sort((a, b) => new Date(b.lastUpdate).getTime() - new Date(a.lastUpdate).getTime());
+        chat.Messages.push(sendMessage.Message);
+        chat.LastUpdate = new Date();
+        this.chats.sort((a, b) => new Date(b.LastUpdate).getTime() - new Date(a.LastUpdate).getTime());
       }
     });
   }
 
-  seen = (chatId: string) => {
-    const chatIndex = this.chats.findIndex(chat => chat.id == chatId);
-    const chat = this.chats[chatIndex];
-    if (chat.id !== this.chatId){
-      chat.seen = true;
+  messageSeen = (chat: Chat, latestMessage: Message): boolean => {
+    if (chat.Id !== this.chatId && !this.lastMessage?.SeenList.includes(this.user.Id)){
+      return true
     }
+    return false;
   }
 
   receiver = (participants: User[]): string =>
-    participants.filter(user => user.id !== this.user.id)[0].username;
+    participants.filter(user => user.Id !== this.user.Id)[0].Username;
 
   chatClasses = (chatId: string) => this.chatId == chatId ? "chat selected" : "chat";
 
