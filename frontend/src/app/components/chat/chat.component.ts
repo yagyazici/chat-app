@@ -45,7 +45,7 @@ export class ChatComponent implements OnInit {
           this.scrollToBottom();
         }, 0);
       }
-      this.chat = response.Response
+      this.chat = response.Data
     });
   }
 
@@ -67,7 +67,7 @@ export class ChatComponent implements OnInit {
     const message = this.messageForm.value.Message;
     if (!message) return;
     this.chatService.message(this.chatId, message).subscribe(response => {
-      this.chat.Messages = response.Response
+      this.chat.Messages = response.Data
       this.scrollToBottom();
     })
     this.messageForm.setValue({ Message: "" });

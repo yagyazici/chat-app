@@ -30,8 +30,8 @@ export class AuthPageComponent implements OnInit {
     this.currentUrl = this.router.url == "/login" ? "login" : "register";
     this.setRouterLink()
     this.authForm = new FormGroup({
-      username: new FormControl("string"),
-      password: new FormControl("string")
+      Username: new FormControl("string"),
+      Password: new FormControl("string")
     })
   }
 
@@ -42,24 +42,24 @@ export class AuthPageComponent implements OnInit {
   }
 
   submit = () => {
-    const username = this.authForm.value.username;
-    const password = this.authForm.value.password;
+    const username = this.authForm.value.Username;
+    const password = this.authForm.value.Password;
     if (username == null || password == null){
       console.log("invalid");
       return;
     }
     const authenticate: Authentication = {
-      username: username,
-      password: password
+      Username: username,
+      Password: password
     }
     if (this.currentUrl == "login"){
       this.userService.login(authenticate).subscribe(response => {
-        if (response.isSuccessful) {
-          localStorage.setItem("token", response.authToken.token);
-          localStorage.setItem("token-expires", response.authToken.expires.toString());
-          localStorage.setItem("refresh-token", response.refreshToken.token);
-          localStorage.setItem("current-user", JSON.stringify(response.response))
-          this.dataService.changeCurrentUser(response.response)
+        if (response.IsSuccessful) {
+          localStorage.setItem("token", response.AuthToken.Token);
+          localStorage.setItem("token-expires", response.AuthToken.Expires.toString());
+          localStorage.setItem("refresh-token", response.RefreshToken.Token);
+          localStorage.setItem("current-user", JSON.stringify(response.Data))
+          this.dataService.changeCurrentUser(response.Data)
           this.router.navigate(['/chat']);
           return;
         }
@@ -67,7 +67,7 @@ export class AuthPageComponent implements OnInit {
     }
     if (this.currentUrl == "register"){
       this.userService.register(authenticate).subscribe(response => {        
-        if (response.isSuccessful){
+        if (response.IsSuccessful){
           this.router.navigate(["/login"]);
           return;
         }

@@ -19,6 +19,7 @@ export class ChatsComponent implements OnInit {
   user: User;
   chats: Chat[];
   lastMessage: Message;
+
   constructor(
     private dataService: DataService,
     private chatService: ChatService,
@@ -30,7 +31,7 @@ export class ChatsComponent implements OnInit {
     await this.userService.refreshToken();
     this.dataService.currentUser.subscribe(user => this.user = user)
     this.chatService.chats().subscribe(response => {
-      this.chats = response.Response
+      this.chats = response.Data
       this.dataService.changeChats(this.chats)
     });
     this.dataService.currentChats.subscribe(chats => this.chats = chats)
@@ -48,12 +49,8 @@ export class ChatsComponent implements OnInit {
     });
   }
 
-  messageSeen = (chat: Chat, latestMessage: Message): boolean => {
-    if (chat.Id !== this.chatId && !this.lastMessage?.SeenList.includes(this.user.Id)){
-      return true
-    }
-    return false;
-  }
+  messageSeen = (chat: Chat, latestMessage: Message) =>
+    chat.Id !== this.chatId && !this.lastMessage?.SeenList.includes(this.user.Id)
 
   receiver = (participants: User[]): string =>
     participants.filter(user => user.Id !== this.user.Id)[0].Username;

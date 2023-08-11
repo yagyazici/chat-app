@@ -87,8 +87,8 @@ export class ProfileComponent implements OnInit {
       return;
     }
     this.chatService.newChat(userId).subscribe(response => {
-      this.dataService.addChat(response.Response);
-      this.router.navigate(["chat", response.Response.Id])
+      this.dataService.addChat(response.Data);
+      this.router.navigate(["chat", response.Data.Id])
       this.closeDialog();
     })
   }

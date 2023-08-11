@@ -47,15 +47,15 @@ export class UserService {
     const refreshToken = localStorage.getItem("refresh-token") || "";
     const currentUser = localStorage.getItem("current-user");
     const user = <User>JSON.parse(currentUser || "");
-    const userId = user.id
+    const userId = user.Id
     const params = new HttpParams().appendAll({ userId, refreshToken })
     const url = this.baseUrl + "/RefreshToken";
     await firstValueFrom(this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, null, {
       params: params
     })).then(response => {
-      localStorage.setItem("token", response.authToken.token);
-      localStorage.setItem("token-expires", response.authToken.expires.toString());
-      localStorage.setItem("refresh-token", response.refreshToken.token);
+      localStorage.setItem("token", response.AuthToken.Token);
+      localStorage.setItem("token-expires", response.AuthToken.Expires.toString());
+      localStorage.setItem("refresh-token", response.RefreshToken.Token);
     })
   }
 

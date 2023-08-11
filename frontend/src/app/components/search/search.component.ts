@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
-      message: new FormControl()
+      Message: new FormControl()
     })
     this.searchForm.get("message")?.valueChanges.pipe(
       debounceTime(250),
@@ -46,7 +46,7 @@ export class SearchComponent implements OnInit {
   }
 
   search = (username: string) => {
-    this.userService.search(username).subscribe(users => this.users = users.filter(user => user.id != this.user.id));
+    this.userService.search(username).subscribe(users => this.users = users.filter(user => user.Id != this.user.Id));
   }
 
   openDialog(templateRef: TemplateRef<any>) {
@@ -59,16 +59,16 @@ export class SearchComponent implements OnInit {
   newChat = (userId: string) => {
     console.log(userId);
     const chat = this.chats.filter(chat => {
-      return chat.participants.some(user => user.id === userId);
+      return chat.Participants.some(user => user.Id === userId);
     })[0];
     if (chat) {
-      this.router.navigate(["chat", chat.id])
+      this.router.navigate(["chat", chat.Id])
       this.closeDialog();
       return;
     }
     this.chatService.newChat(userId).subscribe(response => {
-      this.dataService.addChat(response.response);
-      this.router.navigate(["chat", response.response.id])
+      this.dataService.addChat(response.Data);
+      this.router.navigate(["chat", response.Data.Id])
       this.closeDialog();
     })
   }
