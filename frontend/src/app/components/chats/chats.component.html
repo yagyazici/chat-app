@@ -1,8 +1,17 @@
 <div class="inner-chats">
 	<div [routerLink]="['/chat', chat.Id]" *ngFor="let chat of chats" [class]="chatClasses(chat.Id)">
-		<div>
+		<div *ngIf="chat.Type == 'Single'">
 			<p>{{receiver(chat.Participants)}}</p>
 			<small *ngIf="chat.Messages.length">{{latestMessage(chat.Messages).Text}}</small>
+		</div>
+		<div *ngIf="chat.Type == 'Group'">
+			<p>{{chat.Name}}</p>
+			<small *ngIf="chat.Messages.length">
+				<ng-container *ngIf="user.Id !== latestMessage(chat.Messages).UserId">
+					<strong>{{latestMessage(chat.Messages).Username}}: </strong>
+				</ng-container> 
+				{{latestMessage(chat.Messages).Text}}
+			</small>
 		</div>
 	</div>
 </div>

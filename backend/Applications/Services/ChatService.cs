@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Dtos.Responses;
@@ -88,7 +89,8 @@ public class ChatService : IChatService
 
 	public async Task<Response> Message(string chatId, string text)
 	{
-		var currentUserId = _httpContext.GetUserId();
+		var userId = _httpContext.GetUserId();
+		var user = await _userRepository.GetByIdAsync(userId);
 
 		var chat = await _chatRepository.GetByIdAsync(chatId);
 
@@ -96,11 +98,12 @@ public class ChatService : IChatService
 
 		var newMessage = new Message
 		{
-			UserId = currentUserId,
+			Username = user.Username,
+			UserId = user.Id,
 			Text = text
 		};
 
-		newMessage.SeenList.Add(currentUserId);
+		newMessage.SeenList.Add(userId);
 
 		chat.Messages.Add(newMessage);
 		var participants = chat.Participants.Select(participants => participants.Id).ToList();

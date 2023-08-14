@@ -18,6 +18,9 @@ public class ChatController : ControllerBase
 	public async Task<Response> NewChat(string userId) => await _chatService.NewChat(userId);
 
 	[HttpPost]
+	public async Task<Response> NewGroupChat(List<string> userIds, string name) => await _chatService.NewGroupChat(userIds, name);
+
+	[HttpPost]
 	public async Task<Response> Message(string chatId, string text) => await _chatService.Message(chatId, text);
 
 	[HttpGet]

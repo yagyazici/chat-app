@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
 
   user: User;
   users: User[];
+  chatName: string;
   chats: Chat[];
   groupForm: FormGroup<GroupForm>;
   searchForm: FormGroup<SearchForm>;
@@ -78,15 +79,19 @@ export class ProfileComponent implements OnInit {
   }
 
   newGroupChat() {
-    const selectedUsers = this.users?.filter(user => user.Checked)
+    const selectedUsers = this.users?.filter(user => user.Checked);
+    const userIds = selectedUsers.map(user => user.Id);    
+    this.chatService.newGroupChat(userIds, this.chatName).subscribe(response => {
+      this.dataService.addChat(response.Data);
+      this.router.navigate(["chat", response.Data.Id])
+      this.closeDialog();
+    })
   }
-
-  selectedUsers = () => this.users?.filter(user => user.Checked);
 
   openDialog(templateRef: TemplateRef<any>, type: string) {
     if (type === "group") {
       this.userService.getUsers().subscribe(users => {
-        this.users = users
+        this.users = users.filter(user => user.Id !== this.user.Id)
         this.users.map(user => user.Checked = false)
       });
     }

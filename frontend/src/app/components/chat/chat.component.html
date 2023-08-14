@@ -1,6 +1,8 @@
 <div #scrollContainer class="inner-chat">
-    <div *ngFor="let message of chat?.Messages; let index = index; trackBy:trackyByIndex" [class]="messageDirection(message.UserId)">
+    <div *ngFor="let message of chat?.Messages; let index = index; trackBy:trackyByIndex"
+        [class]="messageDirection(message.UserId)">
         <div [class]="curvyMessage(index)">
+            <strong *ngIf="message.UserId != user.Id && chat.Type == 'Group'">{{message.Username}}<br></strong>
             {{message.Text}}
         </div>
     </div>

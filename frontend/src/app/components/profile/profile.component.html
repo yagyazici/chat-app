@@ -35,6 +35,10 @@
 	<div class="dialog">
 		<h3>Create Group Chat</h3>
 		<form class="users">
+			<mat-form-field appearance="outline">
+				<mat-label>Chat Name</mat-label>
+				<input matInput [(ngModel)]="chatName" name="chat-name" type="text" />
+			</mat-form-field>
 			<div *ngFor="let user of users">
 				<div class="inner-users">
 					<p>{{user.Username}}</p>
