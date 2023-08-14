@@ -5,6 +5,7 @@ using Domain.Entities;
 using Domain.Repository;
 using Domain.Services;
 using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Applications.Services;
 
@@ -45,12 +46,42 @@ public class ChatService : IChatService
 		var newChat = new Chat
 		{
 			Id = ObjectId.GenerateNewId().ToString(),
+			Type = "Single",
 			Participants = participants,
 			Messages = new List<Message>()
 		};
 
 		await _chatRepository.AddAsync(newChat);
 		await _chatHubService.CreateChatMessage(userId, newChat);
+
+		return Success<Chat>.Response(newChat);
+	}
+
+	public async Task<Response> NewGroupChat(List<string> userIds, string name)
+	{
+		var currentUserId = _httpContext.GetUserId();
+		var currentUser = await _userRepository.GetByIdAsync(currentUserId);
+		var currentUserDto = _mapper.Map<UserDto>(currentUser);
+
+		var filter = Builders<User>.Filter.In(user => user.Id, userIds);
+		var receivers = await _userRepository.Filter(filter);
+		var receiversDtos = _mapper.Map<List<UserDto>>(receivers);
+		var receiverIds = receiversDtos.Select(receiver => receiver.Id).ToList();
+
+		var participants = new List<UserDto>() { currentUserDto };
+		participants.AddRange(receiversDtos);
+
+		var newChat = new Chat
+		{
+			Id = ObjectId.GenerateNewId().ToString(),
+			Name = name,
+			Type = "Group",
+			Participants = participants,
+			Messages = new List<Message>()
+		};
+
+		await _chatRepository.AddAsync(newChat);
+		await _chatHubService.CreateGroupChatMessage(receiverIds, newChat);
 
 		return Success<Chat>.Response(newChat);
 	}
@@ -104,14 +135,14 @@ public class ChatService : IChatService
 
 		var chat = await _chatRepository.GetByIdAsync(chatId);
 		var updatedMessages = chat.Messages.Select(message =>
-        {
-            if (!message.SeenList.Contains(userId))
-            {
-                message.SeenList.Add(userId);
-                return message;
-            }
-            return message;
-        }).ToList();
+		{
+			if (!message.SeenList.Contains(userId))
+			{
+				message.SeenList.Add(userId);
+				return message;
+			}
+			return message;
+		}).ToList();
 
 		chat.Messages = updatedMessages;
 

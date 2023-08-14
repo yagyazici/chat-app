@@ -8,4 +8,5 @@ public interface IChatService
 	Task<Response> Chats();
 	Task<Response> Message(string chatId, string text);
 	Task<Response> NewChat(string userId);
+	Task<Response> NewGroupChat(List<string> userIds, string name);
 }

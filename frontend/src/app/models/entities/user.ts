@@ -1,5 +1,6 @@
-import { Base } from "../base/base";
+import { Entity } from "../base/entity";
 
-export class User extends Base{
+export class User extends Entity{
 	Username: string;
+	Checked: boolean;
 }

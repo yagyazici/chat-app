@@ -53,6 +53,7 @@ export class UserService {
     await firstValueFrom(this.httpClient.post<TokenResponse<User> & CustomResponse<Response>>(url, null, {
       params: params
     })).then(response => {
+      console.log(response);
       localStorage.setItem("token", response.AuthToken.Token);
       localStorage.setItem("token-expires", response.AuthToken.Expires.toString());
       localStorage.setItem("refresh-token", response.RefreshToken.Token);

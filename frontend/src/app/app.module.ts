@@ -11,7 +11,6 @@ import { CustomInterceptorService } from './services/providers/custom-intercepto
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { MaterialModule } from './modules/material.module';
-import { SearchComponent } from './components/search/search.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { DialogComponent } from './components/dialog/dialog.component';
@@ -23,7 +22,6 @@ import { DialogComponent } from './components/dialog/dialog.component';
     AuthPageComponent,
     ChatsComponent,
     ChatComponent,
-    SearchComponent,
     ProfileComponent,
     EmptyComponent,
     DialogComponent,

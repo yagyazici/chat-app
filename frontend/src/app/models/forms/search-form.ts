@@ -1,5 +1,5 @@
-import { FormControl } from "@angular/forms";
+import { FormArray, FormControl } from "@angular/forms";
 
 export interface SearchForm {
-	Message: FormControl<string | null>
+	Search: FormControl<string | null>
 }

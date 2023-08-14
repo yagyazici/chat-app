@@ -35,6 +35,7 @@ p {
     height: 100%;
 	padding: 1.5rem;
 	flex: 1;
+	color: white;
 }
 
 .users {
@@ -51,4 +52,16 @@ p {
 .button {
 	display: flex;
 	justify-content: flex-end;
+}
+
+.inner-users {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

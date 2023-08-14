@@ -18,10 +18,14 @@ public static class DependencyInjection
 	public static void AddSignalRServices(this IServiceCollection services)
 	{
 		services.AddTransient<IChatHubService, ChatHubService>();
-		services.AddSignalR();
+		services.AddSignalR().AddJsonProtocol(options =>
+		{
+			options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+		});
 	}
 
-	public static void MapHubs(this WebApplication webApplication){
-        webApplication.MapHub<ChatHub>("/chat-hub");
-    }
+	public static void MapHubs(this WebApplication webApplication)
+	{
+		webApplication.MapHub<ChatHub>("/chat-hub");
+	}
 }

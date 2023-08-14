@@ -49,9 +49,6 @@ export class ChatsComponent implements OnInit {
     });
   }
 
-  messageSeen = (chat: Chat, latestMessage: Message) =>
-    chat.Id !== this.chatId && !this.lastMessage?.SeenList.includes(this.user.Id)
-
   receiver = (participants: User[]): string =>
     participants.filter(user => user.Id !== this.user.Id)[0].Username;
 

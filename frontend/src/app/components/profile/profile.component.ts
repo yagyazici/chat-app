@@ -1,11 +1,12 @@
-import { animate, group, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Chat } from 'src/app/models/entities/chat';
 import { User } from 'src/app/models/entities/user';
+import { GroupForm } from 'src/app/models/forms/group-form';
 import { SearchForm } from 'src/app/models/forms/search-form';
 import { ChatService } from 'src/app/services/chat.service';
 import { DataService } from 'src/app/services/providers/data.service';
@@ -28,9 +29,9 @@ export class ProfileComponent implements OnInit {
 
   user: User;
   users: User[];
-  allUsers: User[];
-  searchForm: FormGroup<SearchForm>;
   chats: Chat[];
+  groupForm: FormGroup<GroupForm>;
+  searchForm: FormGroup<SearchForm>;
   state: string = "default";
 
   constructor(
@@ -38,43 +39,26 @@ export class ProfileComponent implements OnInit {
     private dataService: DataService,
     private chatService: ChatService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.dataService.currentUser.subscribe(user => this.user = user);
     this.searchForm = new FormGroup({
-      Message: new FormControl()
-    })
-    this.searchForm.get("Message")?.valueChanges.pipe(
+      Search: new FormControl(),
+    });
+    this.searchForm.get("Search")?.valueChanges.pipe(
       debounceTime(250),
       distinctUntilChanged()
     ).subscribe(username => {
       if (username) this.search(username);
       else this.users = [];
-    })
+    });
     this.dataService.currentChats.subscribe(chats => this.chats = chats)
   }
 
-  logout = () => this.userService.logout();
-
-  onClose = () => this.state = "default";
-
-  onOpen = () => this.state = "rotated";
-
-  search = (username: string) => {
+  search = (username: string) =>
     this.userService.search(username).subscribe(users => this.users = users.filter(user => user.Id != this.user.Id));
-  }
-
-  openDialog(templateRef: TemplateRef<any>, type: string) {
-    if (type === "group"){
-      this.userService.getUsers().subscribe(users => this.allUsers = users);
-    }
-    this.dialog.open(templateRef, {
-      minHeight: "500px",
-      minWidth: "450px"
-    });
-  }
 
   newChat = (userId: string) => {
     console.log(userId);
@@ -93,5 +77,30 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  newGroupChat() {
+    const selectedUsers = this.users?.filter(user => user.Checked)
+  }
+
+  selectedUsers = () => this.users?.filter(user => user.Checked);
+
+  openDialog(templateRef: TemplateRef<any>, type: string) {
+    if (type === "group") {
+      this.userService.getUsers().subscribe(users => {
+        this.users = users
+        this.users.map(user => user.Checked = false)
+      });
+    }
+    this.dialog.open(templateRef, {
+      minHeight: "500px",
+      minWidth: "450px"
+    });
+  }
+
   closeDialog = () => this.dialog.closeAll();
+
+  logout = () => this.userService.logout();
+
+  onClose = () => this.state = "default";
+
+  onOpen = () => this.state = "rotated";
 }

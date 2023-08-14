@@ -35,10 +35,12 @@ export class ChatComponent implements OnInit {
     this.chatHub.on("ReceiveNewMessage", (sendMessage: SendMessage) => {
       if (this.chatId === sendMessage.ChatId) {
         this.chat.Messages.push(sendMessage.Message);
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 0);
       }
     })
     this.dataService.currentUser.subscribe(user => this.user = user);
-
     if (this.chatId) this.chatService.chat(this.chatId).subscribe(response => {
       if (!this.chat) {
         setTimeout(() => {
@@ -68,7 +70,9 @@ export class ChatComponent implements OnInit {
     if (!message) return;
     this.chatService.message(this.chatId, message).subscribe(response => {
       this.chat.Messages = response.Data
-      this.scrollToBottom();
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 0);
     })
     this.messageForm.setValue({ Message: "" });
   }

@@ -4,6 +4,5 @@
 			<p>{{receiver(chat.Participants)}}</p>
 			<small *ngIf="chat.Messages.length">{{latestMessage(chat.Messages).Text}}</small>
 		</div>
-		<i *ngIf="messageSeen(chat, latestMessage(chat.Messages))" class="fa-solid fa-circle" style="color: white;"></i>
 	</div>
 </div>

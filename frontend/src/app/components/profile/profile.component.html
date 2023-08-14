@@ -16,12 +16,12 @@
 		<form [formGroup]="searchForm" class="search-form">
 			<mat-form-field appearance="outline">
 				<mat-label>Username</mat-label>
-				<input matInput formControlName="message" type="text" />
+				<input matInput formControlName="Search" type="text" />
 			</mat-form-field>
 		</form>
 		<div class="users">
 			<div *ngFor="let user of users" class="inner-users">
-				<button mat-button class="user-button" (click)="newChat(user.Username)">{{user.Username}}</button>
+				<button mat-button class="user-button" (click)="newChat(user.Id)">{{user.Username}}</button>
 				<mat-divider></mat-divider>
 			</div>
 		</div>
@@ -33,7 +33,19 @@
 
 <ng-template #createGroupChat>
 	<div class="dialog">
-
-		<mat-checkbox *ngFor="let user of allUsers" labelPosition="before" [value]="user.Id">{{user.Username}}</mat-checkbox>
+		<h3>Create Group Chat</h3>
+		<form class="users">
+			<div *ngFor="let user of users">
+				<div class="inner-users">
+					<p>{{user.Username}}</p>
+					<mat-checkbox [(ngModel)]="user.Checked" name="user"></mat-checkbox>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+		</form>
+		<div class="buttons">
+			<button mat-button (click)="closeDialog()">Close</button>
+			<button mat-raised-button color="primary" (click)="newGroupChat()">Create Group Chat</button>
+		</div>
 	</div>
 </ng-template>
