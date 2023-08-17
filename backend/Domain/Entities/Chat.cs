@@ -9,5 +9,5 @@ public class Chat : Entity
 	public string Type { get; set; }
 	public List<UserDto> Participants { get; set; }
 	public List<Message> Messages { get; set; }
-	public DateTime LastUpdate { get; set; } = DateTime.Now;
+	public DateTime LastUpdate { get; set; }
 }
