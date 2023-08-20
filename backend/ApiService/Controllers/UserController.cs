@@ -1,3 +1,4 @@
+using Applications.Producers;
 using Domain.Dtos;
 using Domain.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +11,15 @@ namespace ApiService.Controllers;
 public class UserController : ControllerBase
 {
 	private readonly IUserService _userService;
+	private readonly LoggingProducer _loggingProducer;
 
-	public UserController(IUserService userService) => _userService = userService;
+    public UserController(IUserService userService, LoggingProducer loggingProducer)
+    {
+        _userService = userService;
+        _loggingProducer = loggingProducer;
+    }
 
-	[HttpPost]
+    [HttpPost]
 	public async Task<Response> Register(Authentication request) => await _userService.Register(request);
 
 	[HttpPost]

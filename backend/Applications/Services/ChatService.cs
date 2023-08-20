@@ -1,8 +1,9 @@
-using System.Security.Cryptography.X509Certificates;
+using Applications.Producers;
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Dtos.Responses;
 using Domain.Entities;
+using Domain.Logs;
 using Domain.Repository;
 using Domain.Services;
 using MongoDB.Bson;
@@ -17,19 +18,22 @@ public class ChatService : IChatService
 	private readonly IHttpContextService _httpContext;
 	private readonly IChatHubService _chatHubService;
 	private readonly IMapper _mapper;
+	private readonly LoggingProducer _loggingProducer;
 
 	public ChatService(
 		IHttpContextService httpContext,
 		IGenericRepository<Chat> chatRepository,
 		IGenericRepository<User> userRepository,
 		IMapper mapper,
-		IChatHubService chatHubService)
+		IChatHubService chatHubService,
+		LoggingProducer loggingProducer)
 	{
 		_httpContext = httpContext;
 		_chatRepository = chatRepository;
 		_userRepository = userRepository;
 		_mapper = mapper;
 		_chatHubService = chatHubService;
+		_loggingProducer = loggingProducer;
 	}
 
 	public async Task<Response> NewChat(string userId)
@@ -51,6 +55,8 @@ public class ChatService : IChatService
 			Participants = participants,
 			Messages = new List<Message>()
 		};
+
+		await _loggingProducer.Produce(new NewChatLog() { UserId = currentUser.Id, ChatId = newChat.Id });
 
 		await _chatRepository.AddAsync(newChat);
 		await _chatHubService.CreateChatMessage(userId, newChat);
@@ -80,6 +86,8 @@ public class ChatService : IChatService
 			Participants = participants,
 			Messages = new List<Message>()
 		};
+
+		await _loggingProducer.Produce(new NewGroupChatLog() { UserId = currentUserId, ChatId = newChat.Id });
 
 		await _chatRepository.AddAsync(newChat);
 		await _chatHubService.CreateGroupChatMessage(receiverIds, newChat);
@@ -113,6 +121,8 @@ public class ChatService : IChatService
 			Message = newMessage,
 		};
 
+		await _loggingProducer.Produce(new MessageLog() {ChatId = chat.Id, UserId = userId, Text = newMessage.Text });
+
 		await _chatRepository.UpdateAsync(chat);
 		await _chatHubService.SendMessage(participants, sendMessage);
 
@@ -126,6 +136,8 @@ public class ChatService : IChatService
 		var chats = await _chatRepository.FilterAsync(chat =>
 			chat.Participants.Where(user => user.Id == currentUserId).Any()
 		);
+
+		await _loggingProducer.Produce(new ChatsLog() { UserId = currentUserId });
 
 		chats = chats.OrderByDescending(chat => chat.LastUpdate).ToList();
 
@@ -148,6 +160,8 @@ public class ChatService : IChatService
 		}).ToList();
 
 		chat.Messages = updatedMessages;
+		
+		await _loggingProducer.Produce(new ChatLog() { UserId = userId, ChatId = chat.Id });
 
 		await _chatRepository.UpdateAsync(chat);
 

@@ -1,7 +1,10 @@
 using System.Text;
+using Applications.Consumers;
+using Applications.Producers;
 using Applications.Services;
 using Domain.Services;
 using Infrastructure.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,5 +49,34 @@ public static class DependencyInjection
 				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
 			};
 		});
+	}
+
+	public static void AddRabbitMQ(this IServiceCollection services)
+	{
+		services.AddMassTransit(x =>
+		{
+			x.AddConsumer<LoggingConsumer>();
+
+			x.UsingRabbitMq((context, rabbitConfig) =>
+			{
+				rabbitConfig.Host(new Uri("rabbitmq://localhost/"), h =>
+				{
+					h.Username("guest");
+					h.Password("guest");
+				});
+
+				// Configure consumers
+				rabbitConfig.ReceiveEndpoint("log-queue", e =>
+				{
+					e.ConfigureConsumer<LoggingConsumer>(context);
+				});
+			});
+		});
+		services.AddProducers();
+	}
+
+	public static void AddProducers(this IServiceCollection services)
+	{
+		services.AddScoped<LoggingProducer>();
 	}
 }

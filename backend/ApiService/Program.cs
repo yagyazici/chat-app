@@ -23,6 +23,7 @@ builder.Services.AddInfrastructure();
 builder.Services.AddApplications();
 builder.Services.AddAuthentications(builder);
 builder.Services.AddSignalRServices();
+builder.Services.AddRabbitMQ();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 	policy
