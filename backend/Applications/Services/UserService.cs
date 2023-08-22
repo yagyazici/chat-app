@@ -3,7 +3,6 @@ using AutoMapper;
 using Domain.Dtos;
 using Domain.Dtos.Responses;
 using Domain.Entities;
-using Domain.Logs;
 using Domain.Repository;
 using Domain.Services;
 using MongoDB.Driver;
@@ -39,7 +38,12 @@ public class UserService : IUserService
 	{
 		var users = await _genericRepository.GetAllAsync();
 		var userId = _httpContext.GetUserId();
-		await _loggingProducer.Produce(new UsersLog() { UserId = userId });
+
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = userId,
+			Type = "All users"
+		});
 		return _mapper.Map<List<UserDto>>(users);
 	}
 
@@ -48,13 +52,21 @@ public class UserService : IUserService
 		var checkUser = await _genericRepository.AnyAsync(entity => entity.Username == request.Username);
 		if (!checkUser)
 		{
-			await _loggingProducer.Produce(new LoginLog() { Username = request.Username, Password = request.Password, IsSuccsessful = false });
+			await _loggingProducer.Produce(new Log
+			{
+				UserId = request.Username,
+				Type = "Failed to login no user found"
+			});
 			return Fail<string>.Response("No user found");
 		};
 		var user = await _genericRepository.FirstOrDefault(entity => entity.Username == request.Username);
 		if (!_cryptoService.VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt))
 		{
-			await _loggingProducer.Produce(new LoginLog() { Username = request.Username, Password = request.Password, IsSuccsessful = false });
+			await _loggingProducer.Produce(new Log
+			{
+				UserId = request.Username,
+				Type = "Failed to login wrong password"
+			});
 			return Fail<string>.Response("Wrong password");
 		}
 
@@ -62,7 +74,11 @@ public class UserService : IUserService
 		var refreshToken = _tokenService.CreateRefreshToken();
 		_tokenService.SetRefreshToken(refreshToken, user);
 
-		await _loggingProducer.Produce(new LoginLog() { UserId = user.Id, Username = request.Username, Password = request.Password, IsSuccsessful = false });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = user.Id,
+			Type = "Login"
+		});
 
 		await _genericRepository.UpdateAsync(user);
 
@@ -84,7 +100,11 @@ public class UserService : IUserService
 		var newRefreshToken = _tokenService.CreateRefreshToken();
 		_tokenService.SetRefreshToken(newRefreshToken, user);
 
-		await _loggingProducer.Produce(new RefreshTokenLog() { UserId = userId });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = user.Id,
+			Type = "Login"
+		});
 
 		await _genericRepository.UpdateAsync(user);
 		return TokenResponse<string>.Success(authToken, newRefreshToken);
@@ -105,7 +125,11 @@ public class UserService : IUserService
 			PasswordSalt = passwordSalt
 		};
 
-		await _loggingProducer.Produce(new RegisterLog() { Username = request.Username, Password = request.Password });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = newUser.Username,
+			Type = "Register"
+		});
 
 		await _genericRepository.AddAsync(newUser);
 		return Success<string>.Response("user created");
@@ -117,7 +141,11 @@ public class UserService : IUserService
 		var builder = Builders<User>.Filter;
 		var filter = builder.Regex("Username", "^" + username + ".*");
 
-		await _loggingProducer.Produce(new SearchLog() { UserId = userId, Search = username });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = userId,
+			Type = "Search"
+		});
 
 		var users = await _genericRepository.Filter(filter);
 		var mappedUsers = _mapper.Map<List<UserDto>>(users);

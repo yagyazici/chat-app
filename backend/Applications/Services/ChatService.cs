@@ -3,7 +3,6 @@ using AutoMapper;
 using Domain.Dtos;
 using Domain.Dtos.Responses;
 using Domain.Entities;
-using Domain.Logs;
 using Domain.Repository;
 using Domain.Services;
 using MongoDB.Bson;
@@ -56,7 +55,11 @@ public class ChatService : IChatService
 			Messages = new List<Message>()
 		};
 
-		await _loggingProducer.Produce(new NewChatLog() { UserId = currentUser.Id, ChatId = newChat.Id });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = currentUserId,
+			Type = "New Chat"
+		});
 
 		await _chatRepository.AddAsync(newChat);
 		await _chatHubService.CreateChatMessage(userId, newChat);
@@ -87,7 +90,11 @@ public class ChatService : IChatService
 			Messages = new List<Message>()
 		};
 
-		await _loggingProducer.Produce(new NewGroupChatLog() { UserId = currentUserId, ChatId = newChat.Id });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = currentUserId,
+			Type = "New Group Chat"
+		});
 
 		await _chatRepository.AddAsync(newChat);
 		await _chatHubService.CreateGroupChatMessage(receiverIds, newChat);
@@ -121,7 +128,12 @@ public class ChatService : IChatService
 			Message = newMessage,
 		};
 
-		await _loggingProducer.Produce(new MessageLog() {ChatId = chat.Id, UserId = userId, Text = newMessage.Text });
+
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = userId,
+			Type = "Message"
+		});
 
 		await _chatRepository.UpdateAsync(chat);
 		await _chatHubService.SendMessage(participants, sendMessage);
@@ -137,7 +149,11 @@ public class ChatService : IChatService
 			chat.Participants.Where(user => user.Id == currentUserId).Any()
 		);
 
-		await _loggingProducer.Produce(new ChatsLog() { UserId = currentUserId });
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = currentUserId,
+			Type = "Get Chats"
+		});
 
 		chats = chats.OrderByDescending(chat => chat.LastUpdate).ToList();
 
@@ -160,8 +176,12 @@ public class ChatService : IChatService
 		}).ToList();
 
 		chat.Messages = updatedMessages;
-		
-		await _loggingProducer.Produce(new ChatLog() { UserId = userId, ChatId = chat.Id });
+
+		await _loggingProducer.Produce(new Log
+		{
+			UserId = userId,
+			Type = "Get Chat"
+		});
 
 		await _chatRepository.UpdateAsync(chat);
 

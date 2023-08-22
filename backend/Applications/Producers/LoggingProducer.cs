@@ -1,4 +1,4 @@
-using Domain.Logs.Base;
+using Domain.Entities;
 using MassTransit;
 
 namespace Applications.Producers;

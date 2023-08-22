@@ -13,7 +13,6 @@ public static class DependencyInjection
 	{
 		services.AddSingleton<ICryptoService, CryptoService>();
 		services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-		services.AddSingleton(typeof(ILogRepository<>), typeof(LogRepository<>));
 	}
 
 	public static void AddSignalRServices(this IServiceCollection services)
